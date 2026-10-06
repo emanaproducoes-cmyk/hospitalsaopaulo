@@ -1,0 +1,90 @@
+/* ==========================================================
+   hero-soft.css
+   Suaviza a tipografia do topo (hero) e integra o menu ao fundo.
+   Deve ser importado DEPOIS do globals.css.
+   ========================================================== */
+
+/* Título principal: menos peso, letras respirando, linhas equilibradas */
+main .hero .hero-copy h1 {
+  font-weight: 600;
+  font-size: clamp(2.4rem, 4.4vw, 4.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  word-spacing: 0.04em;
+  max-width: 17ch;
+  text-wrap: balance;
+  color: #ffffff;
+}
+
+/* Subtítulo: mais contraste e largura de leitura confortável */
+main .hero .hero-copy .hero-lead {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  font-weight: 400;
+  max-width: 50ch;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* Números do rodapé do hero: menos pesados */
+main .hero .hero-proof strong {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Cartão "Leitura executiva": frase com peso mais leve */
+main .hero .hero-card strong {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+/* Menu: azul-marinho translúcido, integrado ao hero */
+main .site-header {
+  background: rgba(11, 24, 64, 0.9);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+main .site-header .brand,
+main .site-header .brand strong,
+main .site-header .brand b,
+main .site-header nav a:not(.header-cta) {
+  color: #ffffff;
+}
+
+main .site-header .brand strong {
+  color: #f4a3a8;
+}
+
+main .site-header nav a:not(.header-cta) {
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+main .site-header nav a:not(.header-cta):hover {
+  opacity: 1;
+}
+
+/* Celular: título um pouco menor para não ocupar a tela inteira */
+@media (max-width: 640px) {
+  main .hero .hero-copy h1 {
+    font-size: clamp(2rem, 9vw, 2.6rem);
+    max-width: 100%;
+  }
+}
+
+/* Menu no celular: fundo azul-marinho e ícone claro (o CSS original usa fundo claro) */
+@media (max-width: 760px) {
+  main .site-header nav {
+    background: #0b1840;
+  }
+
+  main .site-header nav > a {
+    border-bottom-color: rgba(255, 255, 255, 0.12);
+  }
+
+  main .site-header .menu-toggle i {
+    background: #ffffff;
+  }
+}

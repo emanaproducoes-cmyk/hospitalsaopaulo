@@ -88,3 +88,9 @@ main .site-header nav a:not(.header-cta):hover {
     background: #ffffff;
   }
 }
+
+
+/* Destaque de cor no nome do hospital, dentro do título */
+main .hero .hero-copy h1 .hero-highlight {
+  color: #f4a3a8 !important;
+}

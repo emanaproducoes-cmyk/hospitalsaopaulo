@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import "./globals.css";
+import "./hero-soft.css";
 
 type CardKind = "timeline" | "rings" | "quadrants" | "stakeholders" | "map" | "bars" | "funnel" | "line" | "radar" | "palette" | "position" | "voice" | "growth" | "loops" | "layers" | "tools" | "journey" | "assistant" | "hub" | "dashboard" | "gantt" | "org" | "steps" | "training" | "scale";
 type CardData = { id: string; title: string; benefit: string; kind: CardKind; eyebrow?: string; sentence: string; read: string; bullets: string[]; technical: string; tag: string };

@@ -89,8 +89,55 @@ main .site-header nav a:not(.header-cta):hover {
   }
 }
 
-
 /* Destaque de cor no nome do hospital, dentro do título */
 main .hero .hero-copy h1 .hero-highlight {
-  color: #f4a3a8 !important;
+  color: #f4a3a8;
+}
+
+/* Cartão do topo: logo do hospital no lugar da "Leitura executiva" */
+main .hero .hero-logo-card {
+  width: min(100%, 400px);
+  padding: 56px 40px;
+  background: #ffffff;
+  box-shadow: 20px 20px 0 rgba(91, 107, 203, 0.38);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 24px;
+}
+
+main .hero .hero-logo-card img {
+  width: min(70%, 220px);
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+main .hero .hero-logo-name {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+main .hero .hero-logo-name strong {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #b01010;
+}
+
+main .hero .hero-logo-name b {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #081848;
+}
+
+@media (max-width: 760px) {
+  main .hero .hero-logo-card {
+    width: 90%;
+    align-self: flex-end;
+    padding: 36px 24px;
+  }
 }

@@ -17,6 +17,7 @@ import JornadaPaciente from "./figures/JornadaPaciente";
 import ForcaMarca from "./figures/ForcaMarca";
 import Posicionamento from "./figures/Posicionamento";
 import PlanoDiretor from "./figures/PlanoDiretor";
+import Ecossistema from "./figures/Ecossistema";
 
 type CardKind = "timeline" | "rings" | "quadrants" | "stakeholders" | "map" | "bars" | "funnel" | "line" | "radar" | "palette" | "position" | "voice" | "growth" | "loops" | "layers" | "tools" | "journey" | "assistant" | "hub" | "dashboard" | "gantt" | "org" | "steps" | "training" | "scale";
 
@@ -309,10 +310,10 @@ export default function Home() {
 }
 
 /* Imagens .webp (recortes do PDF): espaço reservado abaixo do texto até os gráficos serem criados.
-   "envolvidos", "praca", "mercado", "competicao", "natalidade", "paciente-ideal", "jornada", "forca-marca", "posicionamento" e "gerar" saíram desta lista porque agora são desenhados em código (figuras em app/figures). */
+   "envolvidos", "praca", "mercado", "competicao", "natalidade", "paciente-ideal", "jornada", "forca-marca", "posicionamento", "gerar" e "camadas" saíram desta lista porque agora são desenhados em código (figuras em app/figures). */
 const pdfCropByCard: Record<string, string> = {
   origem: "origem", ambiente: "ambiente", situacao: "situacao",
-  camadas: "camadas", ferramentas: "ferramentas", intranet: "intranet",
+  ferramentas: "ferramentas", intranet: "intranet",
   contato: "contato", assistente: "assistente", painel: "painel", implantacao: "implantacao",
   organograma: "organograma",
 };
@@ -332,6 +333,7 @@ const figureByCard: Record<string, ComponentType> = {
   "forca-marca": ForcaMarca,
   posicionamento: Posicionamento,
   gerar: PlanoDiretor,
+  camadas: Ecossistema,
 };
 
 function PlanFigure({ card }: { card: CardData }) {

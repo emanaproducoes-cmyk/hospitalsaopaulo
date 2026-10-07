@@ -4,6 +4,7 @@ import { Fragment, useEffect, useRef, useState, type ComponentType } from "react
 import "./globals.css";
 import "./hero-soft.css";
 import "./dossie.css";
+import "./capitulosHover.css";
 import Ambiente from "./figures/Ambiente";
 import Origem from "./figures/Origem";
 import Situacao from "./figures/Situacao";
@@ -22,6 +23,7 @@ import IntranetSetores from "./figures/IntranetSetores";
 import ComponentesSoftwares from "./figures/ComponentesSoftwares";
 import PainelDiretoria from "./figures/PainelDiretoria";
 import Implantacao from "./figures/Implantacao";
+import EquipeMarketing from "./figures/EquipeMarketing";
 
 type CardKind = "timeline" | "rings" | "quadrants" | "stakeholders" | "map" | "bars" | "funnel" | "line" | "radar" | "palette" | "position" | "voice" | "growth" | "loops" | "layers" | "tools" | "journey" | "assistant" | "hub" | "dashboard" | "gantt" | "org" | "steps" | "training" | "scale";
 
@@ -203,21 +205,6 @@ const sections: SectionData[] = [
         read: "A intranet organiza políticas, playbooks e calendário; os canais de Teams aproximam setores; tarefas e alertas fecham o ciclo.", bullets: ["Teams: canais por setor, reunião semanal de funil e plantão de dúvidas.", "SharePoint: intranet com políticas, scripts e biblioteca de marca.", "Planner e Power Automate: tarefas por setor e alertas quando um contato espera resposta."], technical: "[RECOMENDAÇÃO] Microsoft 365; alternativa de tarefas: ClickUp ou Trello. Fonte: plano v3.0, p. 36.", tag: "Trabalho entre setores"
       },
       {
-        id: "contato", title: "Jornada de um contato no ecossistema", benefit: "Você acompanha cada passagem sem perder o contexto.", kind: "journey",
-        tese: {
-          lead: "**Oito passos** levam uma **intenção registrada** até a **continuidade do relacionamento**.",
-        },
-        read: "O fluxo trata contato como pessoa: mede, orienta e passa para uma pessoa quando a dúvida pede cuidado humano.", bullets: ["Origem → intenção → triagem → resposta.", "Agendamento → comparecimento → continuidade.", "Indicação fecha o ciclo e alimenta o próximo."], technical: "[RECOMENDAÇÃO] Fluxo de contato com handoff humano.", tag: "8 etapas"
-      },
-      {
-        id: "assistente", title: "Assistente virtual", benefit: "Você oferece resposta rápida sem automatizar o cuidado clínico.", kind: "assistant",
-        tese: {
-          lead: "O assistente responde **dúvidas administrativas**.",
-          statement: "!!Urgência!! ou **dúvida clínica** vai direto a **uma pessoa**.",
-        },
-        read: "O limite é parte do desenho: guard-rails, base legal, revisão humana e passagem clara protegem a jornada.", bullets: ["Horários, documentos e orientações gerais.", "Urgência: encaminhamento imediato para pessoa.", "Dúvida clínica: nunca é respondida por automação."], technical: "[RECOMENDAÇÃO] CFM, LGPD e revisão humana como cuidados do plano.", tag: "Fluxo com cuidado"
-      },
-      {
         id: "painel", title: "Painéis para a diretoria", benefit: "Você decide com uma visão comum do mês.", kind: "dashboard",
         tese: {
           lead: "Um **painel simples** reúne **origem, intenção, resposta e jornadas concluídas**.",
@@ -314,11 +301,10 @@ export default function Home() {
 }
 
 /* Imagens .webp (recortes do PDF): espaço reservado abaixo do texto até os gráficos serem criados.
-   "envolvidos", "praca", "mercado", "competicao", "natalidade", "paciente-ideal", "jornada", "forca-marca", "posicionamento", "gerar", "camadas", "intranet", "ferramentas", "painel" e "implantacao" saíram desta lista porque agora são desenhados em código (figuras em app/figures). */
+   "envolvidos", "praca", "mercado", "competicao", "natalidade", "paciente-ideal", "jornada", "forca-marca", "posicionamento", "gerar", "camadas", "intranet", "ferramentas", "painel", "implantacao" e "organograma" saíram desta lista porque agora são desenhados em código (figuras em app/figures).
+   Os cards "contato" (Jornada de um contato no ecossistema) e "assistente" (Assistente virtual) foram excluídos a pedido. */
 const pdfCropByCard: Record<string, string> = {
   origem: "origem", ambiente: "ambiente", situacao: "situacao",
-  contato: "contato", assistente: "assistente",
-  organograma: "organograma",
 };
 /* Figuras já redesenhadas em SVG/CSS. Cada nova figura entra aqui; o .webp só é usado enquanto não existir.
    Quando todas estiverem prontas, apague este bloco de .webp, o pdfCropByCard e a pasta public/assets/plan-crops. */
@@ -341,6 +327,7 @@ const figureByCard: Record<string, ComponentType> = {
   ferramentas: ComponentesSoftwares,
   painel: PainelDiretoria,
   implantacao: Implantacao,
+  organograma: EquipeMarketing,
 };
 
 function PlanFigure({ card }: { card: CardData }) {

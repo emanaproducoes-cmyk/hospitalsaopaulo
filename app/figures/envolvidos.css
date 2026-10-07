@@ -1,0 +1,141 @@
+/* ==========================================================
+   envolvidos.css — Mapa de partes interessadas (tabela interativa)
+   Usa as variáveis --f-* definidas em figures.css (classe .fig).
+   ========================================================== */
+
+.env-wrap {
+  position: relative;
+}
+
+/* ---------- Tabela ---------- */
+.env-table-wrap {
+  overflow: hidden;
+  border: 1px solid var(--f-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.env-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.env-table thead th {
+  padding: 15px 20px;
+  background: var(--f-navy);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: left;
+}
+.env-table thead th:nth-child(1) { width: 22%; }
+.env-table thead th:nth-child(2) { width: 27%; }
+.env-table thead th:nth-child(3) { width: 29%; }
+.env-table thead th:nth-child(4) { width: 22%; }
+
+.env-table tbody tr {
+  cursor: default;
+  outline: none;
+  transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
+}
+.env-table tbody tr + tr { border-top: 1px solid var(--f-line); }
+.env-table tbody tr:nth-child(even) { background: #f4f5fa; }
+
+/* Hover / foco: a linha ganha cor de destaque; as demais esmaecem */
+.env-table tbody tr.is-active,
+.env-table tbody tr:focus-visible {
+  background: #e4e7f5;
+  box-shadow: inset 4px 0 0 var(--c, var(--f-red));
+}
+.env-table.has-active tbody tr:not(.is-active) { opacity: 0.5; }
+.env-table tbody tr:focus-visible { outline: 3px solid var(--f-red); outline-offset: -3px; }
+
+.env-table tbody th {
+  padding: 18px 20px;
+  color: var(--f-navy);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+  vertical-align: top;
+  transition: color 0.2s ease;
+}
+.env-table tbody tr.is-active th { color: var(--c, var(--f-red)); }
+
+.env-table tbody td {
+  padding: 18px 20px;
+  color: var(--ink, #1c2240);
+  vertical-align: top;
+}
+
+/* ---------- Tooltip ---------- */
+.env-tip {
+  position: absolute;
+  z-index: 6;
+  left: 22%;
+  width: max-content;
+  max-width: min(300px, 80%);
+  margin-left: 20px;
+  padding: 12px 16px 14px;
+  border-radius: 12px;
+  background: var(--f-navy);
+  color: #fff;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, 0.28);
+  pointer-events: none;
+  animation: env-fade 0.18s ease both;
+}
+.env-tip.is-below { transform: translateY(8px); }
+.env-tip.is-above { transform: translateY(calc(-100% - 8px)); }
+.env-tip strong { display: block; font-size: 15px; line-height: 1.3; }
+.env-tip p { margin: 6px 0 0; color: #d6dbf2; font-size: 13.5px; line-height: 1.5; }
+.env-tip-tag {
+  display: block;
+  margin-bottom: 4px;
+  color: #ff9aa2;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+@keyframes env-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .env-table { font-size: 14px; }
+  .env-table thead th,
+  .env-table tbody th,
+  .env-table tbody td { padding: 14px 14px; }
+}
+
+@media (max-width: 640px) {
+  /* Tabela vira lista de cartões: rótulo em cima, informação embaixo. Tooltip some (o conteúdo já está visível). */
+  .env-tip { display: none; }
+  .env-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .env-table,
+  .env-table tbody,
+  .env-table tbody tr,
+  .env-table tbody th,
+  .env-table tbody td { display: block; width: 100%; box-sizing: border-box; }
+  .env-table tbody tr { padding: 16px 0 12px; }
+  .env-table tbody th { padding: 0 18px 8px; color: var(--f-red); font-size: 16px; }
+  .env-table tbody td { padding: 4px 18px; font-size: 14.5px; }
+  .env-table tbody td::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--f-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .env-table tbody tr,
+  .env-table tbody th { transition: none; }
+  .env-tip { animation: none; }
+}

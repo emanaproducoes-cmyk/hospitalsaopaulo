@@ -1,0 +1,170 @@
+/* ==========================================================
+   situacao.css — Mapa de situação (linhas de cuidado + tabela)
+   Usa as variáveis --f-* definidas em figures.css (classe .fig).
+   ========================================================== */
+
+/* ---------- Cartões ---------- */
+.sit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sit-card { position: relative; }
+
+.sit-btn {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--c);
+  border-radius: 14px;
+  background: #f6f7fc;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sit-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 12px 14px;
+  border-radius: 0 0 14px 14px;
+  background: var(--c);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.sit-body {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  min-height: 112px;
+  padding: 20px 20px 22px;
+  color: #2b3150;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Hover / foco */
+.sit-card.is-active { z-index: 2; }
+.sit-card.is-active .sit-btn { transform: translateY(-4px); box-shadow: 0 16px 30px var(--soft); }
+.sit-grid.has-active .sit-card:not(.is-active) .sit-btn { opacity: 0.5; }
+.sit-btn:focus-visible { outline: 3px solid var(--f-red); outline-offset: 3px; }
+
+/* Tooltip */
+.sit-tip {
+  position: absolute;
+  z-index: 6;
+  top: calc(100% + 10px);
+  left: 50%;
+  width: max-content;
+  max-width: min(280px, 100%);
+  padding: 12px 16px 14px;
+  border-radius: 12px;
+  background: var(--f-navy);
+  color: #fff;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, 0.28);
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: sit-fade 0.18s ease both;
+}
+.sit-tip p { margin: 0; color: #d6dbf2; font-size: 14px; line-height: 1.5; }
+.sit-tip-tag { display: block; margin-bottom: 4px; color: #ff9aa2; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+
+@keyframes sit-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Legenda ---------- */
+.sit-caption {
+  margin: 24px 0 18px;
+  color: var(--f-muted);
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.5;
+}
+.sit-tag { color: var(--f-red); font-style: normal; font-weight: 700; }
+
+/* ---------- Tabela ---------- */
+.sit-table-wrap {
+  overflow: hidden;
+  border: 1px solid var(--f-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.sit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.sit-table thead th {
+  padding: 15px 22px;
+  background: var(--f-navy);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: left;
+}
+.sit-table thead th:first-child { width: 27%; }
+
+.sit-table tbody tr { transition: background 0.2s ease, box-shadow 0.2s ease; }
+.sit-table tbody tr + tr { border-top: 1px solid var(--f-line); }
+.sit-table tbody tr:nth-child(even) { background: #f4f5fa; }
+.sit-table tbody tr:hover { background: #e4e7f5; box-shadow: inset 4px 0 0 var(--f-red); }
+
+.sit-table tbody th {
+  width: 27%;
+  padding: 18px 22px;
+  color: var(--f-navy);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+  vertical-align: top;
+}
+
+.sit-table tbody td {
+  padding: 18px 22px;
+  color: var(--ink, #1c2240);
+  vertical-align: top;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .sit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .sit-grid { grid-template-columns: 1fr; gap: 14px; }
+  .sit-body { min-height: 0; }
+
+  /* Tabela vira lista: rótulo em cima, leitura embaixo */
+  .sit-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .sit-table, .sit-table tbody, .sit-table tbody tr, .sit-table tbody th, .sit-table tbody td { display: block; width: 100%; box-sizing: border-box; }
+  .sit-table tbody tr { padding: 14px 0 10px; }
+  .sit-table tbody th { padding: 0 18px 4px; color: var(--f-red); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .sit-table tbody td { padding: 0 18px; font-size: 14.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sit-btn, .sit-table tbody tr { transition: none; }
+  .sit-tip { animation: none; }
+}

@@ -151,6 +151,24 @@
 .fig-praca .pra-tag { color: var(--f-red); font-style: normal; font-weight: 700; }
 
 @media (prefers-reduced-motion: reduce) {
+
+   /* ---------- Cidades: esmaecer, hit area e pulso do HMSP ---------- */
+.fig-praca .pra-city { transition: opacity 0.25s ease; }
+.fig-praca .pra-city.is-dim { opacity: 0.3; }
+.fig-praca .pra-hit { cursor: pointer; }
+.fig-praca .pra-hmsp-halo {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pra-pulse 2.4s ease-out infinite;
+}
+@keyframes pra-pulse {
+  0% { transform: scale(0.7); opacity: 0.9; }
+  100% { transform: scale(2); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fig-praca .pra-hmsp-halo { animation: none; }
+  .fig-praca .pra-city { transition: none; }
+}
   .fig-praca .pra-mun, .fig-praca .pra-leg-btn { transition: none; }
   .fig-praca .pra-tip { animation: none; }
 }

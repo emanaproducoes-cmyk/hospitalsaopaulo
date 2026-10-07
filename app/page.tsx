@@ -6,6 +6,7 @@ import "./hero-soft.css";
 import "./dossie.css";
 import Ambiente from "./figures/Ambiente";
 import Origem from "./figures/Origem";
+import Situacao from "./figures/Situacao";
 
 type CardKind = "timeline" | "rings" | "quadrants" | "stakeholders" | "map" | "bars" | "funnel" | "line" | "radar" | "palette" | "position" | "voice" | "growth" | "loops" | "layers" | "tools" | "journey" | "assistant" | "hub" | "dashboard" | "gantt" | "org" | "steps" | "training" | "scale";
 
@@ -311,6 +312,7 @@ const pdfCropByCard: Record<string, string> = {
 const figureByCard: Record<string, ComponentType> = {
   origem: Origem,
   ambiente: Ambiente,
+  situacao: Situacao,
 };
 
 function PlanFigure({ card }: { card: CardData }) {

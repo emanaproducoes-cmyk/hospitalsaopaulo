@@ -1,0 +1,197 @@
+/* ==========================================================
+   mercadoFigura.css — Mercado dimensionado: funil + tabelas top-down e bottom-up
+   Todos os seletores começam por .mer-root para vencer estilos globais de table/th/td/ul.
+   ========================================================== */
+
+.mer-root {
+  --f-navy: var(--navy, #0b1a40);
+  --f-red: var(--red, #a31621);
+  --f-line: var(--line, #dfe2ee);
+  --f-muted: var(--muted, #5b6180);
+  display: grid;
+  gap: 28px;
+}
+
+/* ---------- Funil ---------- */
+.mer-root .mer-funnel-box { position: relative; }
+
+.mer-root .mer-funnel { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+
+.mer-root .mer-frow {
+  display: grid;
+  grid-template-columns: minmax(0, 46%) minmax(0, 1fr);
+  align-items: center;
+  gap: 28px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  outline: none;
+  cursor: default;
+  transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
+}
+.mer-root .mer-funnel.has-active .mer-frow:not(.is-active) { opacity: 0.4; }
+.mer-root .mer-frow.is-active,
+.mer-root .mer-frow:focus-visible { background: #eef0f8; box-shadow: inset 4px 0 0 var(--c, var(--f-red)); }
+.mer-root .mer-frow:focus-visible { outline: 3px solid var(--f-red); outline-offset: -3px; }
+
+.mer-root .mer-bar-col { min-width: 0; }
+.mer-root .mer-bar {
+  display: block;
+  height: 46px;
+  border-radius: 4px;
+  transform-origin: left center;
+  transition: transform 0.3s ease, filter 0.25s ease;
+}
+.mer-root .mer-frow.is-active .mer-bar { transform: scaleX(1.03) scaleY(1.06); filter: brightness(1.12); }
+
+.mer-root .mer-ftext { display: grid; gap: 2px; color: var(--f-navy); line-height: 1.35; }
+.mer-root .mer-ftext strong { font-size: clamp(14px, 1.5vw, 17px); font-weight: 700; transition: color 0.2s ease; }
+.mer-root .mer-frow.is-active .mer-ftext strong { color: var(--c, var(--f-red)); }
+.mer-root .mer-ftext span { font-size: clamp(14px, 1.5vw, 16px); color: #2b3150; }
+.mer-root .mer-ftext em { margin-left: 8px; font-style: normal; color: var(--f-muted); }
+
+/* ---------- Legenda ---------- */
+.mer-root figcaption { line-height: 1.5; }
+.mer-root .mer-tag { color: var(--f-red); font-style: normal; font-weight: 700; }
+.mer-root .mer-estb { color: var(--f-muted); font-weight: 700; }
+
+/* ---------- Tabelas ---------- */
+.mer-root .mer-tables { display: grid; gap: 28px; }
+.mer-root .mer-tbl-box { position: relative; }
+
+.mer-root .mer-tbl-wrap {
+  overflow: hidden;
+  border: 1px solid var(--f-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.mer-root .mer-tbl {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.mer-root .mer-tbl thead th {
+  padding: 15px 18px;
+  background: var(--f-navy);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: left;
+  vertical-align: bottom;
+}
+.mer-root .mer-tbl thead th:nth-child(1) { width: 29%; }
+.mer-root .mer-tbl thead th:nth-child(2) { width: 33%; }
+.mer-root .mer-tbl thead th.mer-n { width: 12.6%; }
+
+.mer-root .mer-tbl tbody tr {
+  outline: none;
+  background: #fff;
+  transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
+}
+.mer-root .mer-tbl tbody tr + tr { border-top: 1px solid var(--f-line); }
+.mer-root .mer-tbl tbody tr:nth-child(even) { background: #f4f5fa; }
+
+.mer-root .mer-tbl tbody tr.is-active,
+.mer-root .mer-tbl tbody tr:focus-visible {
+  background: #e4e7f5;
+  box-shadow: inset 4px 0 0 var(--c, var(--f-red));
+}
+.mer-root .mer-tbl.has-active tbody tr:not(.is-active) { opacity: 0.5; }
+.mer-root .mer-tbl tbody tr:focus-visible { outline: 3px solid var(--f-red); outline-offset: -3px; }
+
+.mer-root .mer-tbl tbody th {
+  padding: 15px 18px;
+  background: transparent;
+  color: var(--f-navy);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+  vertical-align: top;
+  transition: color 0.2s ease;
+}
+.mer-root .mer-tbl tbody tr.is-active th { color: var(--c, var(--f-red)); }
+
+.mer-root .mer-tbl tbody td {
+  padding: 15px 18px;
+  color: var(--ink, #1c2240);
+  text-align: left;
+  vertical-align: top;
+}
+.mer-root .mer-tbl td.mer-n { font-variant-numeric: tabular-nums; white-space: nowrap; transition: background 0.2s ease; }
+.mer-root .mer-tbl td.mer-base { background: rgba(10, 31, 143, 0.05); font-weight: 700; color: var(--f-navy); }
+.mer-root .mer-tbl tbody td.mer-n:hover { background: rgba(10, 31, 143, 0.12); }
+
+/* Marcações dentro dos rótulos */
+.mer-root .mer-est { color: var(--f-muted); font-style: normal; font-weight: 700; }
+.mer-root .mer-ano { color: var(--f-red); font-weight: 700; }
+.mer-root .mer-mes { color: var(--blue, #0a1f8f); font-weight: 700; }
+
+/* ---------- Tooltip ---------- */
+.mer-root .mer-tip {
+  position: absolute;
+  z-index: 6;
+  width: max-content;
+  max-width: min(300px, 80%);
+  padding: 12px 16px 14px;
+  border-radius: 12px;
+  background: var(--f-navy);
+  color: #fff;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, 0.28);
+  pointer-events: none;
+  animation: mer-tip-in 0.18s ease both;
+}
+.mer-root .mer-tip.is-below { transform: translateY(8px); }
+.mer-root .mer-tip.is-above { transform: translateY(calc(-100% - 8px)); }
+.mer-root .mer-tip strong { display: block; font-size: 15px; line-height: 1.3; }
+.mer-root .mer-tip p { margin: 6px 0 0; color: #d6dbf2; font-size: 13.5px; line-height: 1.5; }
+.mer-root .mer-tip-tag { display: block; margin-bottom: 4px; color: #ff9aa2; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+
+@keyframes mer-tip-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .mer-root .mer-tbl { font-size: 14px; }
+  .mer-root .mer-tbl thead th,
+  .mer-root .mer-tbl tbody th,
+  .mer-root .mer-tbl tbody td { padding: 12px 12px; }
+  .mer-root .mer-frow { gap: 18px; }
+}
+
+@media (max-width: 640px) {
+  .mer-root .mer-tip { display: none; }
+
+  /* Funil: barra em cima, texto embaixo */
+  .mer-root .mer-frow { grid-template-columns: 1fr; gap: 10px; }
+  .mer-root .mer-bar { height: 36px; }
+
+  /* Tabela vira lista de cartões: rótulo em cima, informação embaixo */
+  .mer-root .mer-tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .mer-root .mer-tbl,
+  .mer-root .mer-tbl tbody,
+  .mer-root .mer-tbl tbody tr,
+  .mer-root .mer-tbl tbody th,
+  .mer-root .mer-tbl tbody td { display: block; width: 100%; box-sizing: border-box; }
+  .mer-root .mer-tbl tbody tr { padding: 16px 0 12px; }
+  .mer-root .mer-tbl tbody th { padding: 0 18px 8px; color: var(--f-red); font-size: 16px; }
+  .mer-root .mer-tbl tbody td { padding: 4px 18px; white-space: normal; }
+  .mer-root .mer-tbl tbody td::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--f-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mer-root .mer-frow, .mer-root .mer-bar, .mer-root .mer-tbl tbody tr, .mer-root .mer-tbl tbody th, .mer-root .mer-tbl td.mer-n { transition: none; }
+  .mer-root .mer-tip { animation: none; }
+}

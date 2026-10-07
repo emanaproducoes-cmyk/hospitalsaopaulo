@@ -1,0 +1,103 @@
+/* Figura "Jornada do paciente": tudo sob .jp-root */
+.jp-root { position: relative; color: #1c2240; }
+.jp-root .jp-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ===== 6 etapas: grade de 4 faixas (chip, subtítulo, rótulo verde, cartão de ação) ===== */
+.jp-root ol.jp-steps { list-style: none; margin: 0; padding: 4px 0 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: auto auto auto auto; column-gap: 22px; }
+.jp-root .jp-step { grid-row: 1 / span 4; display: grid; grid-template-rows: subgrid; position: relative; outline: none; cursor: default; transition: opacity 0.18s ease; }
+.jp-root .jp-chip { position: relative; display: grid; place-items: center; min-height: 58px; padding: 14px 8px; border-radius: 8px; background: var(--c); color: #fff; text-align: center; font-weight: 700; font-size: 15px; line-height: 1.25; transition: filter 0.18s ease, box-shadow 0.18s ease; }
+.jp-root .jp-step:not(:nth-of-type(6)) .jp-chip::after { content: ""; position: absolute; right: -17px; top: 50%; margin-top: -6px; border: 6px solid transparent; border-left: 9px solid #0b1a40; border-right: 0; }
+.jp-root .jp-sub { padding: 18px 4px 0; text-align: center; font-size: 14.5px; line-height: 1.35; color: #1c2240; }
+.jp-root .jp-gap { display: block; min-height: 4px; }
+.jp-root .jp-label { grid-row: 3; grid-column: 1 / -1; align-self: center; z-index: 1; margin: 18px 0 12px; list-style: none; pointer-events: none; color: #2e7d4f; font-size: 14px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+.jp-root .jp-act { display: grid; place-items: center; min-height: 88px; padding: 14px 10px; border: 2px solid #a9d6bb; border-radius: 12px; background: #e9f5ee; color: #2e6b45; text-align: center; font-size: 14px; line-height: 1.3; transition: background 0.18s ease, border-color 0.18s ease; }
+.jp-root .jp-act-lbl { display: none; }
+
+/* estado ativo: o restante esmaece */
+.jp-root .jp-steps.has-active .jp-step:not(.is-on) { opacity: 0.35; }
+.jp-root .jp-step.is-on .jp-chip { filter: brightness(1.14); box-shadow: 0 0 0 3px rgba(163, 22, 33, 0.18); }
+.jp-root .jp-step.is-on .jp-act { background: #d9eee2; border-color: #2e7d4f; }
+.jp-root .jp-step:focus-visible .jp-chip { outline: 2px solid #a31621; outline-offset: 3px; }
+
+.jp-root .jp-cap { margin: 22px 0 18px; color: #5b6180; font-size: 14px; font-style: italic; }
+
+/* ===== Tabela ===== */
+.jp-root .jp-tablewrap { border: 1px solid #dfe2ee; border-radius: 14px; overflow: hidden; background: #fff; }
+.jp-root table.jp-tbl { width: 100%; margin: 0; border-collapse: collapse; table-layout: fixed; font-size: 14px; line-height: 1.45; color: #1c2240; background: #fff; }
+.jp-root .jp-tbl thead th { background: #0b1a40; color: #fff; text-align: left; font-weight: 700; font-size: 14px; padding: 13px 16px; border: 0; }
+.jp-root .jp-tbl thead th:nth-child(1) { width: 27%; }
+.jp-root .jp-tbl thead th:nth-child(2) { width: 30%; }
+.jp-root .jp-tbl tbody th,
+.jp-root .jp-tbl tbody td { padding: 13px 16px; vertical-align: top; text-align: left; border: 0; border-top: 1px solid #dfe2ee; transition: opacity 0.18s ease, background 0.18s ease; }
+.jp-root .jp-tbl tbody tr:first-child th,
+.jp-root .jp-tbl tbody tr:first-child td { border-top: 0; }
+.jp-root .jp-tbl tbody th { font-weight: 700; color: #0b1a40; background: transparent; }
+.jp-root .jp-tbl tbody tr { outline: none; cursor: default; }
+.jp-root .jp-tbl tbody tr:nth-child(even) { background: #f4f5fa; }
+.jp-root .jp-m { color: #0a1f8f; font-weight: 700; }
+.jp-root .jp-tbl tbody tr.is-active { background: #e4e7f5; }
+.jp-root .jp-tbl tbody tr.is-active > th { box-shadow: inset 4px 0 0 var(--c, #a31621); color: var(--c, #a31621); }
+.jp-root .jp-tbl.has-active tbody tr:not(.is-active) { opacity: 0.5; }
+.jp-root .jp-tbl tbody tr:focus-visible { outline: 2px solid #a31621; outline-offset: -2px; }
+
+/* ===== Tooltip ===== */
+.jp-root .jp-tip { position: absolute; z-index: 20; left: clamp(150px, var(--left, 50%), calc(100% - 150px)); width: 300px; max-width: calc(100% - 16px); transform: translate(-50%, 10px); display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-radius: 12px; background: #0b1a40; color: #fff; box-shadow: 0 14px 34px rgba(11, 26, 64, 0.28); pointer-events: none; animation: jp-in 0.18s ease; }
+.jp-root .jp-tip.is-above { transform: translate(-50%, calc(-100% - 10px)); }
+.jp-root .jp-tip-tag { color: #ff9aa2; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.jp-root .jp-tip-tit { font-size: 15px; font-weight: 700; line-height: 1.25; }
+.jp-root .jp-tip-body { color: #d6dbf2; font-size: 13.5px; line-height: 1.4; }
+@keyframes jp-in { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 1000px) {
+  .jp-root ol.jp-steps { column-gap: 16px; }
+  .jp-root .jp-chip { font-size: 13.5px; padding: 12px 6px; }
+  .jp-root .jp-step:not(:nth-of-type(6)) .jp-chip::after { right: -13px; border-width: 5px; border-left-width: 7px; margin-top: -5px; }
+  .jp-root .jp-sub { font-size: 13px; }
+  .jp-root .jp-act { font-size: 12.5px; padding: 10px 6px; }
+}
+
+@media (max-width: 860px) {
+  .jp-root table.jp-tbl { font-size: 13px; }
+  .jp-root .jp-tbl thead th { font-size: 13px; padding: 11px 12px; }
+  .jp-root .jp-tbl tbody th,
+  .jp-root .jp-tbl tbody td { padding: 11px 12px; }
+}
+
+/* ===== Celular: etapas viram lista vertical; tabela vira cartões ===== */
+@media (max-width: 640px) {
+  .jp-root ol.jp-steps { display: block; padding: 0; }
+  .jp-root .jp-step { display: block; margin-bottom: 12px; border: 1px solid #dfe2ee; border-radius: 12px; overflow: hidden; background: #fff; }
+  .jp-root .jp-chip { border-radius: 0; justify-items: start; text-align: left; padding: 12px 14px; font-size: 15px; }
+  .jp-root .jp-step:not(:nth-of-type(6)) .jp-chip::after { display: none; }
+  .jp-root .jp-sub { display: block; padding: 10px 14px 4px; text-align: left; font-size: 14px; }
+  .jp-root .jp-gap,
+  .jp-root .jp-label { display: none; }
+  .jp-root .jp-act { margin: 8px 14px 14px; min-height: 0; text-align: left; place-items: start; justify-items: start; }
+  .jp-root .jp-act-lbl { display: block; margin-bottom: 2px; color: #2e7d4f; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  .jp-root .jp-tablewrap { border: 0; border-radius: 0; background: transparent; overflow: visible; }
+  .jp-root .jp-tbl thead { display: none; }
+  .jp-root table.jp-tbl,
+  .jp-root .jp-tbl tbody,
+  .jp-root .jp-tbl tbody tr,
+  .jp-root .jp-tbl tbody th,
+  .jp-root .jp-tbl tbody td { display: block; width: 100%; }
+  .jp-root .jp-tbl tbody tr,
+  .jp-root .jp-tbl tbody tr:nth-child(even) { margin-bottom: 12px; border: 1px solid #dfe2ee; border-radius: 12px; background: #fff; overflow: hidden; }
+  .jp-root .jp-tbl tbody th { background: #0b1a40; color: #fff; padding: 10px 14px; border: 0; }
+  .jp-root .jp-tbl tbody tr.is-active > th { color: #fff; box-shadow: none; }
+  .jp-root .jp-tbl tbody td { padding: 10px 14px; border-top: 1px solid #dfe2ee; }
+  .jp-root .jp-tbl tbody td::before { content: attr(data-label); display: block; margin-bottom: 2px; color: #a31621; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .jp-root .jp-tbl.has-active tbody tr:not(.is-active) { opacity: 1; }
+  .jp-root .jp-steps.has-active .jp-step:not(.is-on) { opacity: 1; }
+  .jp-root .jp-tip { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jp-root .jp-step,
+  .jp-root .jp-chip,
+  .jp-root .jp-act,
+  .jp-root .jp-tbl tbody th,
+  .jp-root .jp-tbl tbody td { transition: none; }
+  .jp-root .jp-tip { animation: none; }
+}

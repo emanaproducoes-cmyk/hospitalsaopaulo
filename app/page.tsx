@@ -5,6 +5,7 @@ import "./globals.css";
 import "./hero-soft.css";
 import "./dossie.css";
 import Ambiente from "./figures/Ambiente";
+import Origem from "./figures/Origem";
 
 type CardKind = "timeline" | "rings" | "quadrants" | "stakeholders" | "map" | "bars" | "funnel" | "line" | "radar" | "palette" | "position" | "voice" | "growth" | "loops" | "layers" | "tools" | "journey" | "assistant" | "hub" | "dashboard" | "gantt" | "org" | "steps" | "training" | "scale";
 
@@ -308,6 +309,7 @@ const pdfCropByCard: Record<string, string> = {
 /* Figuras já redesenhadas em SVG/CSS. Cada nova figura entra aqui; o .webp só é usado enquanto não existir.
    Quando todas estiverem prontas, apague este bloco de .webp, o pdfCropByCard e a pasta public/assets/plan-crops. */
 const figureByCard: Record<string, ComponentType> = {
+  origem: Origem,
   ambiente: Ambiente,
 };
 

@@ -1,0 +1,81 @@
+/* Efeitos de hover dos capítulos e dos cards (arquivo novo, importado no page.tsx).
+   Só acrescenta efeitos: não altera tamanhos, margens nem posições já definidas no site. */
+
+/* ---------- Títulos dos capítulos ---------- */
+.content-section .section-intro h2,
+.decisions .section-intro h2,
+.saulo-section .saulo-copy h2 {
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 10px;
+  transition: text-decoration-color .25s ease, color .25s ease;
+}
+.content-section .section-intro:hover h2,
+.decisions .section-intro:hover h2,
+.saulo-section .saulo-copy:hover h2 {
+  text-decoration-color: #a31621;
+}
+
+/* Número e sobretítulo do capítulo acompanham o hover */
+.content-section .section-intro .section-number,
+.content-section .section-intro .eyebrow,
+.decisions .section-intro .eyebrow,
+.saulo-section .saulo-copy .eyebrow {
+  transition: color .25s ease, opacity .25s ease;
+}
+.content-section .section-intro:hover .section-number,
+.content-section .section-intro:hover .eyebrow,
+.decisions .section-intro:hover .eyebrow,
+.saulo-section .saulo-copy:hover .eyebrow {
+  color: #a31621;
+}
+
+/* ---------- Cards dos capítulos ---------- */
+.editorial-sessions .editorial-session {
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.editorial-sessions .editorial-session:hover {
+  transform: translateY(-3px);
+  box-shadow: inset 4px 0 0 #a31621, 0 18px 40px rgba(11, 26, 64, .10);
+}
+.editorial-sessions .editorial-session:focus-within {
+  box-shadow: inset 4px 0 0 #a31621, 0 18px 40px rgba(11, 26, 64, .10);
+}
+.editorial-sessions .editorial-session .session-copy h3 {
+  transition: color .25s ease;
+}
+.editorial-sessions .editorial-session:hover .session-copy h3 {
+  color: #a31621;
+}
+.editorial-sessions .editorial-session .session-icon {
+  transition: transform .25s ease;
+}
+.editorial-sessions .editorial-session:hover .session-icon {
+  transform: rotate(-10deg) scale(1.15);
+}
+
+/* Cards de decisão da conclusão */
+.decisions .decision-card {
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.decisions .decision-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px rgba(11, 26, 64, .14);
+}
+
+/* Celular: sem deslocamento (o toque não tem "hover" de verdade) */
+@media (hover: none) {
+  .editorial-sessions .editorial-session:hover,
+  .decisions .decision-card:hover { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content-section .section-intro h2,
+  .editorial-sessions .editorial-session,
+  .editorial-sessions .editorial-session .session-icon,
+  .decisions .decision-card { transition: none; }
+  .editorial-sessions .editorial-session:hover,
+  .editorial-sessions .editorial-session:hover .session-icon,
+  .decisions .decision-card:hover { transform: none; }
+}

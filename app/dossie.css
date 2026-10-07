@@ -1,0 +1,235 @@
+/* ==========================================================
+   dossie.css
+   Card "Dossiê de compreensão" em largura total:
+   tese em blocos + tabela "Ficha institucional".
+   Deve ser importado DEPOIS do globals.css.
+   ========================================================== */
+
+/* Card em uma coluna só (sem a imagem à direita) */
+.editorial-session.dossie {
+  display: block;
+  min-height: 0;
+  padding: clamp(22px, 4vw, 52px);
+}
+
+.editorial-session.dossie .session-copy {
+  max-width: none;
+}
+
+.editorial-session.dossie .session-reading,
+.editorial-session.dossie .session-copy ul {
+  max-width: 78ch;
+}
+
+/* ---------- Tese em blocos ---------- */
+.dossie-tese {
+  display: grid;
+  gap: 28px;
+  margin: 6px 0 36px;
+}
+
+.dossie-label {
+  margin: 0;
+  color: var(--red);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.dossie-lead {
+  margin: 0;
+  max-width: 62ch;
+  color: var(--navy);
+  font-size: clamp(20px, 2.2vw, 28px);
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+.dossie-lead strong,
+.dossie-statement strong,
+.dossie-intro strong {
+  font-weight: 700;
+  color: var(--navy);
+}
+
+/* Destaque em maiúsculas */
+.dossie-caps {
+  color: var(--red);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.dossie-statement {
+  margin: 0;
+  padding: clamp(20px, 3vw, 34px) clamp(20px, 3.4vw, 40px);
+  border-left: 4px solid var(--red);
+  background: var(--lav);
+  color: var(--navy);
+  font-size: clamp(18px, 2vw, 24px);
+  line-height: 1.5;
+}
+
+.dossie-intro {
+  margin: 0;
+  max-width: 80ch;
+  color: var(--navy);
+  font-size: clamp(17px, 1.8vw, 21px);
+  line-height: 1.5;
+}
+
+/* Quatro pilares do plano */
+.dossie-pillars {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: -6px;
+}
+
+.dossie-pillar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 20px 20px 22px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--red);
+  border-radius: 12px;
+}
+
+.dossie-pillar b {
+  color: var(--navy);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.dossie-pillar span {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* ---------- Ficha institucional ---------- */
+.dossie-ficha {
+  margin-top: 14px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+
+.dossie-ficha-title {
+  margin: 0 0 20px;
+  color: var(--navy);
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.dossie-table-wrap {
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.dossie-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.dossie-table thead th {
+  width: 26%;
+  padding: 16px 24px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-align: left;
+}
+
+.dossie-table thead th + th {
+  width: auto;
+}
+
+.dossie-table tbody tr + tr {
+  border-top: 1px solid var(--line);
+}
+
+.dossie-table tbody tr:nth-child(even) {
+  background: #f4f5fa;
+}
+
+.dossie-table tbody th {
+  width: 26%;
+  padding: 19px 24px;
+  color: var(--navy);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+  vertical-align: top;
+}
+
+.dossie-table tbody td {
+  padding: 19px 24px;
+  color: var(--ink);
+  vertical-align: top;
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 1050px) {
+  .dossie-pillars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .dossie-tese {
+    gap: 22px;
+  }
+
+  .dossie-pillars {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* Tabela vira lista: rótulo em cima, informação embaixo */
+  .dossie-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .dossie-table,
+  .dossie-table tbody,
+  .dossie-table tbody tr,
+  .dossie-table tbody th,
+  .dossie-table tbody td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .dossie-table tbody tr {
+    padding: 14px 0 10px;
+  }
+
+  .dossie-table tbody th {
+    padding: 0 18px 4px;
+    color: var(--red);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .dossie-table tbody td {
+    padding: 0 18px;
+    font-size: 14.5px;
+  }
+}

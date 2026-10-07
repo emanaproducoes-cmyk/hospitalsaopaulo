@@ -1,0 +1,174 @@
+/* ==========================================================
+   concorrencia.css — tabela "Concorrência privada na praça"
+   Seletores começam por .conc-tables (vencem estilos globais).
+   Autossuficiente: não depende de pracaTabelas.css.
+   ========================================================== */
+
+.conc-tables {
+  --f-navy: var(--navy, #0b1a40);
+  --f-red: var(--red, #a31621);
+  --f-blue: #0a1f8f;
+  --f-amber: #c27a10;
+  --f-line: var(--line, #dfe2ee);
+  --f-muted: var(--muted, #5b6180);
+  margin-top: 28px;
+  display: grid;
+  gap: 14px;
+}
+
+.conc-tables .conc-sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);
+}
+
+/* Legenda */
+.conc-tables .conc-legend {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
+  font-size: 12px; font-weight: 700; color: var(--f-muted);
+}
+.conc-tables .conc-legend-k { letter-spacing: 0.08em; text-transform: uppercase; }
+.conc-tables .conc-legend-i { display: inline-flex; align-items: center; gap: 6px; }
+.conc-tables .conc-legend-i::before {
+  content: ""; width: 10px; height: 10px; border-radius: 99px; background: var(--c);
+}
+.conc-tables .is-alto { --c: var(--f-red); }
+.conc-tables .is-medio { --c: var(--f-amber); }
+.conc-tables .is-baixo-medio { --c: var(--f-blue); }
+
+/* Moldura (overflow visível para o tooltip não ser cortado) */
+.conc-tables .conc-wrap {
+  border: 1px solid var(--f-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.conc-tables .conc-tbl {
+  width: 100%; margin: 0; border-collapse: separate; border-spacing: 0;
+  font-size: 15px; line-height: 1.55; text-align: left;
+}
+
+/* Cabeçalho */
+.conc-tables .conc-tbl thead th {
+  padding: 15px 20px;
+  background: var(--f-navy);
+  color: #fff;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.02em;
+  text-align: left; vertical-align: bottom;
+}
+.conc-tables .conc-tbl thead th:first-child { border-top-left-radius: 13px; width: 24%; }
+.conc-tables .conc-tbl thead th:last-child { border-top-right-radius: 13px; width: 24%; }
+.conc-tables .conc-tbl thead th:nth-child(3) { width: 20%; }
+
+/* Linhas */
+.conc-tables .conc-tbl tbody tr {
+  background: #fff;
+  outline: none;
+  transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
+}
+.conc-tables .conc-tbl tbody tr:nth-child(even) { background: #f4f5fa; }
+.conc-tables .conc-tbl tbody tr + tr > * { border-top: 1px solid var(--f-line); }
+.conc-tables .conc-tbl tbody tr:last-child > :first-child { border-bottom-left-radius: 13px; }
+.conc-tables .conc-tbl tbody tr:last-child > :last-child { border-bottom-right-radius: 13px; }
+
+/* Hover / foco: a linha ganha a cor do risco; as demais esmaecem */
+.conc-tables .conc-tbl tbody tr.is-active,
+.conc-tables .conc-tbl tbody tr:focus-visible {
+  background: #e4e7f5;
+  box-shadow: inset 4px 0 0 var(--c);
+}
+.conc-tables .conc-tbl.has-active tbody tr:not(.is-active) { opacity: 0.5; }
+.conc-tables .conc-tbl tbody tr:focus-visible { outline: 3px solid var(--f-red); outline-offset: -3px; }
+
+.conc-tables .conc-tbl tbody th {
+  padding: 16px 20px;
+  background: transparent; color: var(--f-navy);
+  font-size: 15px; font-weight: 700; line-height: 1.35;
+  text-align: left; vertical-align: top;
+  transition: color 0.2s ease;
+}
+.conc-tables .conc-tbl tbody tr.is-active th { color: var(--c); }
+
+.conc-tables .conc-tbl tbody td {
+  padding: 16px 20px;
+  color: var(--ink, #1c2240);
+  text-align: left; vertical-align: top;
+}
+
+/* Rótulos de fonte */
+.conc-tables .conc-tag {
+  display: inline-block; margin-left: 6px;
+  color: var(--f-red); font-size: 0.78em; font-weight: 800;
+  letter-spacing: 0.02em; text-transform: uppercase; white-space: nowrap;
+}
+
+/* Risco: medidor + texto + tooltip */
+.conc-tables .conc-risk-cell { position: relative; }
+.conc-tables .conc-risk {
+  position: relative; display: inline-flex; align-items: flex-start; gap: 10px;
+  cursor: help;
+}
+.conc-tables .conc-meter { display: inline-flex; gap: 3px; margin-top: 8px; flex: none; }
+.conc-tables .conc-meter i {
+  width: 7px; height: 14px; border-radius: 3px; background: #d5d9ea;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.conc-tables .conc-meter i.on { background: var(--c); }
+.conc-tables .conc-tbl tbody tr.is-active .conc-meter i.on { transform: scaleY(1.2); }
+.conc-tables .conc-risk-txt b { color: var(--c); }
+
+.conc-tables .conc-tip {
+  position: absolute; z-index: 20;
+  right: 0; bottom: calc(100% + 10px);
+  width: 250px; padding: 12px 14px;
+  background: var(--f-navy); color: #fff;
+  border-radius: 10px;
+  font-size: 13px; line-height: 1.5; font-weight: 400;
+  box-shadow: 0 10px 28px rgba(11, 26, 64, 0.28);
+  opacity: 0; visibility: hidden; transform: translateY(4px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  pointer-events: none;
+}
+.conc-tables .conc-tip strong { display: block; margin-bottom: 3px; color: #fff; }
+.conc-tables .conc-tip::after {
+  content: ""; position: absolute; right: 22px; top: 100%;
+  border: 6px solid transparent; border-top-color: var(--f-navy);
+}
+.conc-tables .conc-risk:hover .conc-tip,
+.conc-tables .conc-tbl tbody tr:focus-visible .conc-tip {
+  opacity: 1; visibility: visible; transform: translateY(0);
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .conc-tables .conc-tbl { font-size: 14px; }
+  .conc-tables .conc-tbl thead th,
+  .conc-tables .conc-tbl tbody th,
+  .conc-tables .conc-tbl tbody td { padding: 13px 14px; }
+}
+
+@media (max-width: 640px) {
+  .conc-tables .conc-tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .conc-tables .conc-tbl,
+  .conc-tables .conc-tbl tbody,
+  .conc-tables .conc-tbl tbody tr,
+  .conc-tables .conc-tbl tbody th,
+  .conc-tables .conc-tbl tbody td { display: block; width: 100%; box-sizing: border-box; }
+  .conc-tables .conc-tbl tbody tr { padding: 16px 0 12px; }
+  .conc-tables .conc-tbl tbody tr + tr > * { border-top: 0; }
+  .conc-tables .conc-tbl tbody tr + tr { border-top: 1px solid var(--f-line); }
+  .conc-tables .conc-tbl tbody th { padding: 0 18px 8px; color: var(--f-red); font-size: 16px; }
+  .conc-tables .conc-tbl tbody td { padding: 4px 18px; }
+  .conc-tables .conc-tbl tbody td::before {
+    content: attr(data-label); display: block;
+    color: var(--f-muted); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .conc-tables .conc-tip { right: auto; left: 0; width: min(250px, 80vw); }
+  .conc-tables .conc-tip::after { right: auto; left: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conc-tables .conc-tbl tbody tr,
+  .conc-tables .conc-tbl tbody th,
+  .conc-tables .conc-meter i,
+  .conc-tables .conc-tip { transition: none; }
+}

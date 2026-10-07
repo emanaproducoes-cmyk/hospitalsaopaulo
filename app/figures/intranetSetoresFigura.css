@@ -1,0 +1,118 @@
+/* Intranet, tarefas e comunicação entre setores. Todos os seletores começam por .itn-root. */
+.itn-root {
+  --navy: #0b1a40;
+  --red: #a31621;
+  --blue: #0a1f8f;
+  --line: #dfe2ee;
+  --muted: #5b6180;
+  font-family: inherit;
+  overflow-x: clip;
+}
+
+/* Ferramentas (Teams | SharePoint | Planner) */
+.itn-root .itn-tools { margin: 4px 0 6px; text-align: center; font-size: 14px; font-weight: 700; color: var(--red); line-height: 1.7; }
+.itn-root .itn-tool-wrap { white-space: nowrap; }
+.itn-root .itn-sep { margin: 0 8px; color: var(--navy); font-weight: 400; }
+.itn-root .itn-tool {
+  position: relative; cursor: help; outline: none; border-radius: 6px; padding: 2px 4px;
+  transition: background .18s ease, color .18s ease;
+}
+.itn-root .itn-tool.is-on,
+.itn-root .itn-tool:focus-visible { background: #fbe4e6; }
+.itn-root .itn-tool:focus-visible { box-shadow: 0 0 0 2px var(--red); }
+.itn-root .itn-tool::after {
+  content: attr(data-tip);
+  position: absolute; left: 50%; top: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: max-content; max-width: 240px;
+  background: var(--navy); color: #fff;
+  font-size: 12.5px; font-weight: 400; line-height: 1.4; white-space: normal; text-align: left;
+  padding: 8px 10px; border-radius: 10px;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, .28);
+  opacity: 0; pointer-events: none; transition: opacity .18s ease; z-index: 40;
+}
+.itn-root .itn-tool:hover::after,
+.itn-root .itn-tool:focus-visible::after,
+.itn-root .itn-tool.is-on::after { opacity: 1; }
+
+/* ---------- Diagrama ---------- */
+.itn-root .itn-wrap { position: relative; max-width: 820px; margin: 0 auto; }
+.itn-root .itn-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.itn-root .itn-arrow { transition: opacity .18s ease, stroke-width .18s ease; }
+.itn-root .itn-setor,
+.itn-root .itn-nucleo { cursor: pointer; outline: none; transition: opacity .18s ease; }
+.itn-root .itn-setor rect { transition: fill .18s ease, stroke .18s ease; }
+.itn-root .itn-setor text { transition: fill .18s ease; }
+.itn-root .itn-setor.is-on rect,
+.itn-root .itn-setor:focus-visible rect { fill: #e4e7f5; stroke: var(--red); stroke-width: 2.6px; }
+.itn-root .itn-setor.is-on text,
+.itn-root .itn-setor:focus-visible text { fill: var(--red); }
+.itn-root .itn-nucleo circle { transition: filter .18s ease, stroke .18s ease; }
+.itn-root .itn-nucleo.is-on circle,
+.itn-root .itn-nucleo:focus-visible circle { filter: brightness(1.35); stroke: var(--red); }
+
+/* Um setor ativo: os demais setores e setas esmaecem */
+.itn-root .itn-svg.has-setor .itn-setor:not(.is-on),
+.itn-root .itn-svg.has-setor .itn-arrow:not(.is-on) { opacity: .3; }
+
+/* Núcleo ou ferramenta ativos: todas as setas mostram o fluxo em mão dupla */
+.itn-root .itn-svg.is-fluxo .itn-arrow { stroke-dasharray: 6 5; animation: itn-flow 1s linear infinite; stroke-width: 2.2px; }
+@keyframes itn-flow { to { stroke-dashoffset: -22; } }
+
+/* ---------- Tooltip ---------- */
+.itn-root .itn-tip {
+  position: absolute; z-index: 30;
+  display: flex; flex-direction: column; gap: 4px;
+  width: min(270px, calc(100% - 16px));
+  --half: min(135px, calc(50% - 8px));
+  left: clamp(var(--half), var(--left, 50%), calc(100% - var(--half)));
+  background: var(--navy); color: #fff;
+  border-radius: 12px; padding: 12px 14px;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, .28);
+  pointer-events: none; text-align: left;
+  animation: itn-in .18s ease both;
+}
+.itn-root .itn-tip.up { transform: translate(-50%, calc(-100% - 6px)); }
+.itn-root .itn-tip.down { transform: translate(-50%, 6px); }
+.itn-root .itn-tip-tag { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #ff9aa2; font-weight: 700; }
+.itn-root .itn-tip-title { font-size: 15px; font-weight: 700; line-height: 1.25; color: #fff; }
+.itn-root .itn-tip-body { font-size: 13.5px; line-height: 1.45; color: #d6dbf2; }
+@keyframes itn-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Versão do celular ---------- */
+.itn-root .itn-mobile { display: none; }
+.itn-root .itn-m-nucleo {
+  display: flex; flex-direction: column; gap: 4px; align-items: center; text-align: center;
+  background: var(--navy); color: #fff; border-radius: 999px; padding: 14px 18px;
+  font-size: 14px; cursor: pointer; outline: none; margin: 4px auto 10px; max-width: 280px;
+}
+.itn-root .itn-m-nucleo span { font-size: 12.5px; color: #d6dbf2; }
+.itn-root .itn-m-nucleo.is-on,
+.itn-root .itn-m-nucleo:focus-visible { box-shadow: 0 0 0 3px #fff, 0 0 0 5px var(--red); border-radius: 18px; }
+.itn-root .itn-mobile ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.itn-root .itn-mobile li {
+  margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 2px 6px; align-items: start;
+  padding: 9px 10px; border: 2px solid var(--navy); border-radius: 8px; background: #f4f5fa;
+  font-size: 12.5px; font-weight: 700; color: var(--navy); cursor: pointer; outline: none;
+  transition: background .18s ease, opacity .18s ease, border-color .18s ease;
+}
+.itn-root .itn-mobile li::before { content: none; }
+.itn-root .itn-m-seta { color: var(--blue); }
+.itn-root .itn-m-txt { grid-column: 1 / -1; font-weight: 400; font-size: 12px; color: #1c2240; line-height: 1.4; }
+.itn-root .itn-mobile ul:has(.is-on) li:not(.is-on) { opacity: .45; }
+.itn-root .itn-mobile li.is-on,
+.itn-root .itn-mobile li:focus-visible { background: #e4e7f5; border-color: var(--red); color: var(--red); grid-column: 1 / -1; }
+.itn-root .itn-mobile.is-fluxo .itn-m-seta { color: var(--red); }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 640px) {
+  .itn-root .itn-wrap { display: none; }
+  .itn-root .itn-mobile { display: block; margin-bottom: 12px; }
+  .itn-root .itn-tools { font-size: 12.5px; }
+  .itn-root .itn-tool-wrap { white-space: normal; }
+  .itn-root .itn-tool::after { max-width: 200px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .itn-root *,
+  .itn-root *::after { transition: none !important; animation: none !important; }
+}

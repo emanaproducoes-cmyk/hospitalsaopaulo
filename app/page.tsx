@@ -38,7 +38,7 @@ type CardKind = "timeline" | "rings" | "quadrants" | "stakeholders" | "map" | "b
     **texto**  -> negrito
     !!texto!!  -> caixa-alta vermelha (classe dossie-caps)
 */
-type Pillar = { b: string; s: string };
+type Pillar = { b: string; s: string; t?: string };
 type Tese = { lead: string; statement?: string; intro?: string; pillars?: Pillar[] };
 
 type CardData = { id: string; title: string; benefit: string; kind: CardKind; eyebrow?: string; tese: Tese; read: string; bullets: string[]; technical: string; tag: string };
@@ -55,10 +55,10 @@ const sections: SectionData[] = [
           statement: "A vantagem do hospital !!não é tamanho!!: é ser **a casa de médicos locais e de famílias da praça**.",
           intro: "Este !!Plano de Marketing!! organiza esse capital em um **sistema de crescimento**:",
           pillars: [
-            { b: "Marca de família", s: "com linguagem única" },
-            { b: "Rede de médicos", s: "e empresas parceiras" },
-            { b: "Equipe interna", s: "de marketing" },
-            { b: "Ecossistema digital", s: "de inteligência que coloca toda a informação diante da diretoria" },
+            { b: "Marca de família", s: "com linguagem única", t: "Uma linguagem única em todos os pontos de contato, apoiada na história do hospital e no cuidado com as famílias." },
+            { b: "Rede de médicos", s: "e empresas parceiras", t: "Médicos da região e empresas parceiras como canais de confiança que trazem pacientes ao hospital." },
+            { b: "Equipe interna", s: "de marketing", t: "Marketing feito por uma equipe do próprio hospital; só o programador de sistemas é externo." },
+            { b: "Ecossistema digital", s: "de inteligência que coloca toda a informação diante da diretoria", t: "Canais, dados, CRM e painéis ligados entre si, para que a informação chegue à diretoria." },
           ],
         },
         read: "Cada marco representa uma mudança de capacidade, gestão ou presença. O hoje nasce de decisões que atravessaram gerações.", bullets: ["1975: fundação com 8 leitos e 3 médicos.", "1983: 15 leitos, UTI de 3 leitos, laboratório e endoscopia.", "1996: médicos da região assumem a gestão; hoje, 33 especialidades."], technical: " Datas e marcos consolidados no dossiê do plano.", tag: "Dossiê + linha do tempo"
@@ -337,27 +337,51 @@ function PlanFigure({ card }: { card: CardData }) {
   return <figure className="pdf-visual dossie-figure"><img src={`/assets/plan-crops/${crop}.webp`} alt={`Gráfico ou mapa do Plano de Marketing, Branding e Growth: ${card.title}`} loading="lazy" /></figure>;
 }
 
-const fichaInstitucional: { dim: string; info: string }[] = [
-  { dim: "Natureza", info: "Hospital geral privado, conduzido por grupo de médicos sócios" },
-  { dim: "Localização", info: "Cacoal, Rondônia: Região de Saúde Café, Macrorregião de Saúde II" },
-  { dim: "Cadastro", info: "CNES 2784637; 23 leitos existentes no módulo consultado (fotografia cadastral)" },
-  { dim: "Serviços", info: "Consultas, centro cirúrgico (eletivas, urgência e emergência), internação, pronto atendimento, maternidade e tomografia" },
-  { dim: "Especialidades", info: "33 listadas, incluindo cardiologia, nefrologia, cirurgia vascular, ortopedia, obstetrícia, pediatria, cardiopediatria, genética e psiquiatria" },
-  { dim: "Corpo clínico", info: "Profissionais identificados com fotos, CRM e, em geral, RQE" },
-  { dim: "Transparência de acesso", info: "Informa os limites do pronto atendimento ao lado da oferta (sem check-up eletivo, sem observação acima de 24 h, sem garantia de vaga)" },
-  { dim: "Reputação pública (referência de partida)", info: "Google Maps 3,9/5 em 137 avaliações; Doctoralia 5/5 em 19 opiniões. São universos diferentes: nunca somar médias; exibir n, plataforma e janela" },
-  { dim: "Redes sociais", info: "Instagram e Facebook ativos; métricas não acessadas nesta rodada" },
+const fichaInstitucional: { dim: string; info: string; tip: string }[] = [
+  { dim: "Natureza", info: "Hospital geral privado, conduzido por grupo de médicos sócios", tip: "A gestão por médicos sócios aproxima a decisão clínica da decisão comercial." },
+  { dim: "Localização", info: "Cacoal, Rondônia: Região de Saúde Café, Macrorregião de Saúde II", tip: "Cacoal é polo da Região Café, dentro da Macrorregião de Saúde II de Rondônia." },
+  { dim: "Cadastro", info: "CNES 2784637; 23 leitos existentes no módulo consultado (fotografia cadastral)", tip: "CNES é o Cadastro Nacional de Estabelecimentos de Saúde; os leitos são a foto do cadastro na data da consulta." },
+  { dim: "Serviços", info: "Consultas, centro cirúrgico (eletivas, urgência e emergência), internação, pronto atendimento, maternidade e tomografia", tip: "Seis frentes de atendimento, da consulta à tomografia." },
+  { dim: "Especialidades", info: "33 listadas, incluindo cardiologia, nefrologia, cirurgia vascular, ortopedia, obstetrícia, pediatria, cardiopediatria, genética e psiquiatria", tip: "A lista de 33 especialidades mostra a amplitude do corpo clínico." },
+  { dim: "Corpo clínico", info: "Profissionais identificados com fotos, CRM e, em geral, RQE", tip: "CRM é o registro no Conselho Regional de Medicina; RQE é o Registro de Qualificação de Especialista." },
+  { dim: "Transparência de acesso", info: "Informa os limites do pronto atendimento ao lado da oferta (sem check-up eletivo, sem observação acima de 24 h, sem garantia de vaga)", tip: "Dizer o que o pronto atendimento não faz evita expectativa errada e reclamação." },
+  { dim: "Reputação pública (referência de partida)", info: "Google Maps 3,9/5 em 137 avaliações; Doctoralia 5/5 em 19 opiniões. São universos diferentes: nunca somar médias; exibir n, plataforma e janela", tip: "As duas notas vêm de públicos diferentes; por isso não se somam nem se tira média entre elas." },
+  { dim: "Redes sociais", info: "Instagram e Facebook ativos; métricas não acessadas nesta rodada", tip: "Os números das redes ficam para a próxima rodada de medição." },
 ];
 
 function FichaInstitucional() {
-  return <div className="dossie-ficha">
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [ativa, setAtiva] = useState<number | null>(null);
+  const [tip, setTip] = useState<{ top: number; above: boolean } | null>(null);
+  const ligar = (el: HTMLElement, i: number) => {
+    const w = wrapRef.current; if (!w) return;
+    const r = el.getBoundingClientRect(), wr = w.getBoundingClientRect();
+    const above = i >= fichaInstitucional.length - 3;
+    setAtiva(i);
+    setTip({ above, top: above ? r.top - wr.top : r.bottom - wr.top });
+  };
+  const limpar = () => { setAtiva(null); setTip(null); };
+  return <div className="dossie-ficha" ref={wrapRef}>
     <h4 className="dossie-ficha-title">Ficha institucional</h4>
     <div className="dossie-table-wrap">
-      <table className="dossie-table">
+      <table className={`dossie-table${ativa !== null ? " has-active" : ""}`}>
         <thead><tr><th scope="col">Dimensão</th><th scope="col">Informação</th></tr></thead>
-        <tbody>{fichaInstitucional.map((row) => <tr key={row.dim}><th scope="row">{row.dim}</th><td>{row.info}</td></tr>)}</tbody>
+        <tbody>{fichaInstitucional.map((row, i) => <tr
+          key={row.dim} className={ativa === i ? "is-active" : ""} tabIndex={0}
+          aria-label={`${row.dim}: ${row.info}. ${row.tip}`}
+          onPointerEnter={(e) => { if (e.pointerType !== "touch") ligar(e.currentTarget, i); }}
+          onPointerLeave={(e) => { if (e.pointerType !== "touch") limpar(); }}
+          onPointerDown={(e) => { if (e.pointerType === "touch") { if (ativa === i) limpar(); else ligar(e.currentTarget, i); } }}
+          onFocus={(e) => ligar(e.currentTarget, i)} onBlur={limpar}
+          onKeyDown={(e) => { if (e.key === "Escape") limpar(); }}
+        ><th scope="row">{row.dim}</th><td>{row.info}</td></tr>)}</tbody>
       </table>
     </div>
+    {ativa !== null && tip && <div className={`dossie-tip${tip.above ? " above" : ""}`} style={{ top: tip.top }} role="tooltip">
+      <span className="dossie-tip-tag">Ficha institucional</span>
+      <strong className="dossie-tip-title">{fichaInstitucional[ativa].dim}</strong>
+      <span className="dossie-tip-body">{fichaInstitucional[ativa].tip}</span>
+    </div>}
   </div>;
 }
 
@@ -376,7 +400,7 @@ function TeseCard({ card }: { card: CardData }) {
         {tese.statement && <p className="dossie-statement">{rich(tese.statement)}</p>}
         {tese.intro && <p className="dossie-intro">{rich(tese.intro)}</p>}
         {tese.pillars && <div className="dossie-pillars">
-          {tese.pillars.map((p) => <div className="dossie-pillar" key={p.b}><b>{p.b}</b><span>{p.s}</span></div>)}
+          {tese.pillars.map((p) => <div className="dossie-pillar" key={p.b} tabIndex={0} data-tip={p.t} aria-label={`${p.b} ${p.s}. ${p.t ?? ""}`}><b>{p.b}</b><span>{p.s}</span></div>)}
         </div>}
       </div>
 

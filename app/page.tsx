@@ -1,9 +1,10 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState, type ComponentType } from "react";
 import "./globals.css";
 import "./hero-soft.css";
 import "./dossie.css";
+import Ambiente from "./figures/Ambiente";
 
 type CardKind = "timeline" | "rings" | "quadrants" | "stakeholders" | "map" | "bars" | "funnel" | "line" | "radar" | "palette" | "position" | "voice" | "growth" | "loops" | "layers" | "tools" | "journey" | "assistant" | "hub" | "dashboard" | "gantt" | "org" | "steps" | "training" | "scale";
 
@@ -304,7 +305,15 @@ const pdfCropByCard: Record<string, string> = {
   contato: "contato", assistente: "assistente", painel: "painel", implantacao: "implantacao",
   organograma: "organograma",
 };
+/* Figuras já redesenhadas em SVG/CSS. Cada nova figura entra aqui; o .webp só é usado enquanto não existir.
+   Quando todas estiverem prontas, apague este bloco de .webp, o pdfCropByCard e a pasta public/assets/plan-crops. */
+const figureByCard: Record<string, ComponentType> = {
+  ambiente: Ambiente,
+};
+
 function PlanFigure({ card }: { card: CardData }) {
+  const Figure = figureByCard[card.id];
+  if (Figure) return <div className="dossie-figure"><Figure /></div>;
   const crop = pdfCropByCard[card.id] ?? "origem";
   return <figure className="pdf-visual dossie-figure"><img src={`/assets/plan-crops/${crop}.webp`} alt={`Gráfico ou mapa do Plano de Marketing, Branding e Growth: ${card.title}`} loading="lazy" /></figure>;
 }

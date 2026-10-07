@@ -1,0 +1,371 @@
+/* Posicionamento em camadas. Todos os seletores começam por .psc-root. */
+.psc-root {
+  --navy: #0b1a40;
+  --red: #a31621;
+  --blue: #0a1f8f;
+  --line: #dfe2ee;
+  --muted: #5b6180;
+  font-family: inherit;
+}
+
+.psc-root {
+  overflow-x: clip;
+}
+
+/* tooltips invisíveis não criam rolagem lateral */
+.psc-root .fig {
+  display: grid;
+  gap: 18px;
+}
+
+.psc-root .fig-heading {
+  margin-bottom: 0;
+}
+
+/* ---------- Tabelas ---------- */
+.psc-root .psc-tblwrap {
+  position: relative;
+}
+
+.psc-root .psc-tblbox {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.psc-root .psc-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: #1c2240;
+  margin: 0;
+}
+
+.psc-root .psc-tbl thead th {
+  background: var(--navy);
+  color: #fff;
+  text-align: left;
+  font-weight: 700;
+  font-size: 13.5px;
+  padding: 11px 14px;
+  border: 0;
+}
+
+.psc-root .psc-tbl tbody td {
+  padding: 11px 14px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  vertical-align: top;
+  text-align: left;
+  line-height: 1.45;
+  background: transparent;
+}
+
+.psc-root .psc-tbl tbody tr {
+  outline: none;
+  transition: background .18s ease, opacity .18s ease, box-shadow .18s ease;
+}
+
+.psc-root .psc-tbl tbody tr:nth-child(even) {
+  background: #f4f5fa;
+}
+
+.psc-root .psc-tbl .psc-td-first {
+  font-weight: 700;
+  color: var(--navy);
+  transition: color .18s ease;
+}
+
+.psc-root .psc-tbl-alt .psc-td-first {
+  width: 24%;
+}
+
+.psc-root .psc-tbl-elem .psc-td-first {
+  width: 20%;
+}
+
+.psc-root .psc-tbl tbody tr.is-active,
+.psc-root .psc-tbl tbody tr:focus-visible {
+  background: #e4e7f5;
+  box-shadow: inset 4px 0 0 var(--c, #a31621);
+}
+
+.psc-root .psc-tbl tbody tr.is-active .psc-td-first,
+.psc-root .psc-tbl tbody tr:focus-visible .psc-td-first {
+  color: var(--c, #a31621);
+}
+
+.psc-root .psc-tbl.has-active tbody tr:not(.is-active) {
+  opacity: .5;
+}
+
+/* Pilares e assinaturas dentro da tabela */
+.psc-root .psc-pilar {
+  border-radius: 4px;
+  padding: 0 2px;
+  transition: background .18s ease, color .18s ease, box-shadow .18s ease;
+}
+
+.psc-root .psc-pilar.is-on {
+  color: var(--c);
+  font-weight: 700;
+  background: #fff;
+  box-shadow: inset 0 -2px 0 var(--c);
+}
+
+.psc-root .psc-sig {
+  display: block;
+}
+
+.psc-root .psc-sig+.psc-sig {
+  margin-top: 3px;
+}
+
+.psc-root .psc-sig.is-rec {
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.psc-root .psc-sig em {
+  font-style: normal;
+  font-weight: 700;
+  color: var(--red);
+  font-size: .9em;
+}
+
+/* ---------- Caixa "Frase central e plataforma" ---------- */
+.psc-root .psc-box {
+  background: #eef0f8;
+  border-radius: 12px;
+  box-shadow: inset 6px 0 0 var(--blue);
+  padding: 14px 18px 14px 24px;
+  color: #1c2240;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.psc-root .psc-box p {
+  margin: 0;
+}
+
+.psc-root .psc-box p+p {
+  margin-top: 8px;
+}
+
+.psc-root .psc-box .psc-box-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 6px;
+}
+
+.psc-root .psc-box strong {
+  color: var(--navy);
+}
+
+/* Trechos ligados às alternativas e chips com tooltip */
+.psc-root .psc-link,
+.psc-root .psc-chip {
+  position: relative;
+  outline: none;
+  border-radius: 4px;
+  cursor: help;
+}
+
+.psc-root .psc-link {
+  box-shadow: inset 0 -2px 0 var(--c);
+  transition: background .18s ease, color .18s ease;
+}
+
+.psc-root .psc-link.is-on {
+  background: #fff;
+  color: var(--c);
+}
+
+.psc-root .psc-chip {
+  font-weight: 700;
+  color: var(--navy);
+  box-shadow: inset 0 -2px 0 var(--red);
+}
+
+.psc-root .psc-link:focus-visible,
+.psc-root .psc-chip:focus-visible {
+  box-shadow: 0 0 0 2px var(--red);
+}
+
+.psc-root .psc-link::after,
+.psc-root .psc-chip::after {
+  content: attr(data-tip);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 240px;
+  background: var(--navy);
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, .28);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+  z-index: 40;
+}
+
+.psc-root .psc-link:hover::after,
+.psc-root .psc-link:focus-visible::after,
+.psc-root .psc-chip:hover::after,
+.psc-root .psc-chip:focus-visible::after {
+  opacity: 1;
+}
+
+/* ---------- Tooltip das tabelas ---------- */
+.psc-root .psc-tip {
+  position: absolute;
+  z-index: 30;
+  left: clamp(12px, 24%, 280px);
+  width: min(320px, calc(100% - 24px));
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--navy);
+  color: #fff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, .28);
+  pointer-events: none;
+  text-align: left;
+  transform: translateY(8px);
+  animation: psc-in .18s ease both;
+}
+
+.psc-root .psc-tip.above {
+  transform: translateY(calc(-100% - 8px));
+}
+
+.psc-root .psc-tip-tag {
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #ff9aa2;
+  font-weight: 700;
+}
+
+.psc-root .psc-tip-title {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #fff;
+}
+
+.psc-root .psc-tip-body {
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: #d6dbf2;
+}
+
+@keyframes psc-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .psc-root .psc-tbl {
+    font-size: 13px;
+  }
+
+  .psc-root .psc-tbl thead th,
+  .psc-root .psc-tbl tbody td {
+    padding: 9px 10px;
+  }
+
+  .psc-root .psc-box {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .psc-root .psc-tip {
+    display: none;
+  }
+
+  .psc-root .psc-tbl thead {
+    display: none;
+  }
+
+  .psc-root .psc-tbl,
+  .psc-root .psc-tbl tbody,
+  .psc-root .psc-tbl tr,
+  .psc-root .psc-tbl td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .psc-root .psc-tbl tbody tr {
+    padding: 10px 12px;
+    border-top: 1px solid var(--line);
+  }
+
+  .psc-root .psc-tbl tbody tr:first-child {
+    border-top: 0;
+  }
+
+  .psc-root .psc-tbl tbody td,
+  .psc-root .psc-tbl-alt .psc-td-first,
+  .psc-root .psc-tbl-elem .psc-td-first {
+    padding: 3px 0;
+    border: 0;
+    width: 100%;
+  }
+
+  .psc-root .psc-tbl tbody td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .psc-root .psc-tbl tbody td.psc-td-first::before {
+    display: none;
+  }
+
+  .psc-root .psc-tbl tbody td.psc-td-first {
+    font-size: 14.5px;
+  }
+
+  .psc-root .psc-box {
+    padding: 12px 14px 12px 20px;
+  }
+
+  .psc-root .psc-link::after,
+  .psc-root .psc-chip::after {
+    max-width: 200px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .psc-root *,
+  .psc-root *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

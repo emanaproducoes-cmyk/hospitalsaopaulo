@@ -9,7 +9,7 @@ import Origem from "./figures/Origem";
 import Situacao from "./figures/Situacao";
 import Envolvidos from "./figures/Envolvidos";
 import Praca from "./figures/Praca";
-import Concorrencia from "./figures/Concorrencia";
+import Mercado from "./figures/Mercado";
 
 type CardKind = "timeline" | "rings" | "quadrants" | "stakeholders" | "map" | "bars" | "funnel" | "line" | "radar" | "palette" | "position" | "voice" | "growth" | "loops" | "layers" | "tools" | "journey" | "assistant" | "hub" | "dashboard" | "gantt" | "org" | "steps" | "training" | "scale";
 
@@ -302,10 +302,10 @@ export default function Home() {
 }
 
 /* Imagens .webp (recortes do PDF): espaço reservado abaixo do texto até os gráficos serem criados.
-   "envolvidos", "praca" e "competicao" saíram desta lista porque agora são desenhados em código (figures/). */
+   "envolvidos", "praca" e "mercado" saíram desta lista porque agora são desenhados em código (figuras em app/figures). */
 const pdfCropByCard: Record<string, string> = {
-  origem: "origem", ambiente: "ambiente", situacao: "situacao",
-  mercado: "mercado", natalidade: "natalidade", "paciente-ideal": "paciente-ideal", jornada: "jornada",
+  origem: "origem", ambiente: "ambiente", situacao: "situacao", competicao: "competicao",
+  natalidade: "natalidade", "paciente-ideal": "paciente-ideal", jornada: "jornada",
   "forca-marca": "forca-marca", posicionamento: "posicionamento",
   gerar: "gerar", camadas: "camadas", ferramentas: "ferramentas", intranet: "intranet",
   contato: "contato", assistente: "assistente", painel: "painel", implantacao: "implantacao",
@@ -319,7 +319,7 @@ const figureByCard: Record<string, ComponentType> = {
   situacao: Situacao,
   envolvidos: Envolvidos,
   praca: Praca,
-  competicao: Concorrencia,
+  mercado: Mercado,
 };
 
 function PlanFigure({ card }: { card: CardData }) {

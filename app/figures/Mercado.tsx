@@ -3,6 +3,7 @@
 import { useRef, useState, type CSSProperties, type ReactNode } from "react";
 import "./figures.css";
 import "./mercadoFigura.css";
+import MercadoSom from "./MercadoSom";
 
 /*
   Mercado dimensionado: TAM, SAM e SOM.
@@ -233,6 +234,9 @@ export default function Mercado() {
         <Tabela head="Camada (top-down)" rows={topDown} src="t1" active={active} setActive={setActive} isOn={t1} />
         <Tabela head="Camada (bottom-up)" rows={bottomUp} src="t2" active={active} setActive={setActive} isOn={t2} />
       </div>
+
+      {/* 4) Triangulação do SOM, tabela por linha de serviço e leitura de decisão */}
+      <MercadoSom />
     </div>
   );
 }

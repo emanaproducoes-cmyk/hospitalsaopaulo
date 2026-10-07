@@ -1,0 +1,133 @@
+/* ==========================================================
+   pracaTabelas.css — tabelas da seção "Nossa praça"
+   (regiões de saúde da Macro II e áreas de influência)
+   Todos os seletores começam por .pra-tables para vencer estilos globais de table/th/td.
+   ========================================================== */
+
+.pra-tables {
+  --f-navy: var(--navy, #0b1a40);
+  --f-red: var(--red, #a31621);
+  --f-line: var(--line, #dfe2ee);
+  --f-muted: var(--muted, #5b6180);
+  display: grid;
+  gap: 28px;
+  margin-top: 28px;
+}
+
+.pra-tables .pra-tbl-wrap {
+  overflow: hidden;
+  border: 1px solid var(--f-line);
+  border-radius: 14px;
+  background: #fff;
+}
+
+.pra-tables .pra-tbl {
+  width: 100%;
+  margin: 0;
+  border-collapse: collapse;
+  font-size: 15px;
+  line-height: 1.55;
+  text-align: left;
+}
+
+/* Cabeçalho */
+.pra-tables .pra-tbl thead th {
+  padding: 15px 20px;
+  background: var(--f-navy);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: left;
+  vertical-align: bottom;
+}
+.pra-tables .pra-tbl thead th:first-child { width: 24%; }
+.pra-tables .pra-tbl:not(.pra-tbl-inf) thead th.pra-num { width: 72px; }
+.pra-tables .pra-tbl-inf thead th:nth-child(3) { width: 150px; }
+.pra-tables .pra-tbl-inf thead th:nth-child(4) { width: 170px; }
+.pra-tables .pra-muted-h { display: block; color: #aab2d6; font-weight: 700; }
+
+/* Linhas */
+.pra-tables .pra-tbl tbody tr {
+  outline: none;
+  background: #fff;
+  transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease;
+}
+.pra-tables .pra-tbl tbody tr + tr { border-top: 1px solid var(--f-line); }
+.pra-tables .pra-tbl tbody tr:nth-child(even) { background: #f4f5fa; }
+
+/* Hover / foco: a linha ganha a cor da região; as demais esmaecem */
+.pra-tables .pra-tbl tbody tr.is-active,
+.pra-tables .pra-tbl tbody tr:focus-visible {
+  background: #e4e7f5;
+  box-shadow: inset 4px 0 0 var(--c, var(--f-red));
+}
+.pra-tables .pra-tbl.has-active tbody tr:not(.is-active) { opacity: 0.5; }
+.pra-tables .pra-tbl tbody tr:focus-visible { outline: 3px solid var(--f-red); outline-offset: -3px; }
+
+.pra-tables .pra-tbl tbody th {
+  padding: 16px 20px;
+  background: transparent;
+  color: var(--f-navy);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+  vertical-align: top;
+  transition: color 0.2s ease;
+}
+.pra-tables .pra-tbl tbody tr.is-active th { color: var(--c, var(--f-red)); }
+
+.pra-tables .pra-tbl tbody td {
+  padding: 16px 20px;
+  color: var(--ink, #1c2240);
+  text-align: left;
+  vertical-align: top;
+}
+.pra-tables .pra-num { white-space: nowrap; text-align: left; }
+.pra-tables .pra-muted { color: var(--f-muted); }
+
+/* Linhas de total */
+.pra-tables .pra-tbl tbody tr.pra-total { border-top: 2px solid var(--f-navy); background: #eef0f8; }
+.pra-tables .pra-tbl tbody tr.pra-total td:last-child { font-weight: 700; }
+
+/* Barra de participação na Macro II */
+.pra-tables .pra-pct { display: block; font-variant-numeric: tabular-nums; }
+.pra-tables .pra-bar { display: block; height: 6px; margin-top: 6px; border-radius: 99px; background: #e4e7f5; overflow: hidden; }
+.pra-tables .pra-bar b { display: block; height: 100%; border-radius: 99px; background: var(--c, var(--f-navy)); transition: width 0.4s ease; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .pra-tables .pra-tbl { font-size: 14px; }
+  .pra-tables .pra-tbl thead th,
+  .pra-tables .pra-tbl tbody th,
+  .pra-tables .pra-tbl tbody td { padding: 13px 14px; }
+}
+
+@media (max-width: 640px) {
+  /* Tabela vira lista de cartões: rótulo em cima, informação embaixo */
+  .pra-tables .pra-tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .pra-tables .pra-tbl,
+  .pra-tables .pra-tbl tbody,
+  .pra-tables .pra-tbl tbody tr,
+  .pra-tables .pra-tbl tbody th,
+  .pra-tables .pra-tbl tbody td { display: block; width: 100%; box-sizing: border-box; }
+  .pra-tables .pra-tbl tbody tr { padding: 16px 0 12px; }
+  .pra-tables .pra-tbl tbody th { padding: 0 18px 8px; color: var(--f-red); font-size: 16px; }
+  .pra-tables .pra-tbl tbody td { padding: 4px 18px; }
+  .pra-tables .pra-tbl tbody td::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--f-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pra-tables .pra-tbl tbody tr,
+  .pra-tables .pra-tbl tbody th,
+  .pra-tables .pra-bar b { transition: none; }
+}

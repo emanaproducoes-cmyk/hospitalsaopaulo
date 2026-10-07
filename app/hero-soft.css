@@ -161,3 +161,10 @@ main .hero .hero-side {
   margin-top: 0;
   padding-top: 0;
 }
+
+/* Sobe logo + nome para alinhar com título, texto e botões (só no computador) */
+@media (min-width: 761px) {
+  main .hero .hero-side {
+    transform: translateY(-80px);
+  }
+}

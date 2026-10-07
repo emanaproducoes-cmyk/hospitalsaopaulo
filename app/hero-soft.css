@@ -135,13 +135,11 @@ main .hero .hero-logo-name b {
   color: #ffffff;
 }
 
-@media (max-width: 760px) {
-  main .hero .hero-logo-card {
-    width: 100%;
-    align-self: center;
-  }
+/* computador */
+main .hero .hero-logo-card { width: min(100%, 640px); }
+main .hero .hero-logo-card img { width: min(90%, 500px); }
 
-  main .hero .hero-logo-card img {
-    width: min(60%, 200px);
-  }
+/* celular */
+@media (max-width: 760px) {
+  main .hero .hero-logo-card img { width: min(85%, 340px); }
 }

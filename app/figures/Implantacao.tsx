@@ -299,7 +299,7 @@ export default function Implantacao() {
             <div className="imp-mat-row imp-mat-head" role="row">
               <span role="columnheader" className="imp-mat-lbl" />
               {MAT_COLS.map((c, k) => (
-                <span key={c} role="columnheader" className={`imp-mat-col${on(`matcol:${k}`) ? " is-on" : ""}`} {...props(`matcol:${k}`, "columnheader")}>{c}</span>
+                <span key={c} className={`imp-mat-col${on(`matcol:${k}`) ? " is-on" : ""}`} {...props(`matcol:${k}`, "columnheader")}>{c}</span>
               ))}
             </div>
             {MATURIDADE.map((m, r) => (
@@ -307,7 +307,7 @@ export default function Implantacao() {
                 <span role="rowheader" className="imp-mat-lbl">{m.nome}</span>
                 {m.v.map((v, c) => (
                   <span
-                    key={c} role="cell"
+                    key={c}
                     className={`imp-cell${ativo === `mat:${r}:${c}` ? " is-on" : on(`matcol:${c}`) ? " is-col" : ""}`}
                     style={{ background: NIVEL_COR[v][0], color: NIVEL_COR[v][1] }}
                     {...props(`mat:${r}:${c}`, "cell")}

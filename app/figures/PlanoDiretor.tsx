@@ -3,6 +3,7 @@
 import { Fragment, useEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
 import "./figures.css";
 import "./planoDiretorFigura.css";
+import CrescimentoComposto from "./CrescimentoComposto";
 
 type TipContent = { tag: string; title: string; body: string };
 /* Segmento: [dia inicial, dia final, cor, tom]. Tom 0 = fase de implantação; tom 1 ou 2 = escala e manutenção (cores mais claras). */
@@ -155,6 +156,7 @@ export default function PlanoDiretor() {
   const svgCls = ["pdg-svg", pilAtivo >= 0 ? "has-pil" : "", horAtivo >= 0 ? "has-hor" : ""].filter(Boolean).join(" ");
 
   return (
+    <>
     <div className="pdg-root" ref={rootRef}>
       <figure className="fig">
         <p className="fig-heading">Plano diretor: oito pilares em 365 dias</p>
@@ -316,5 +318,8 @@ export default function PlanoDiretor() {
         </div>
       </figure>
     </div>
+    {/* Na sequência: modelo de crescimento composto (área empilhada, três cenários e tabela de marcos) */}
+    <CrescimentoComposto />
+    </>
   );
 }

@@ -1,0 +1,210 @@
+/* ==========================================================
+   origem.css — linha do tempo do "Dossiê de compreensão"
+   Usa as variáveis --f-* definidas em figures.css (classe .fig).
+   ========================================================== */
+
+.fig-title {
+  margin: 0 0 6px;
+  color: var(--f-navy);
+  font-size: clamp(24px, 3vw, 34px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.fig-tag { color: var(--f-red); font-style: normal; font-weight: 700; }
+
+.fig-origem .fig-heading { margin-bottom: 8px; }
+
+.tl-wrap {
+  position: relative;
+  max-width: 1000px;
+  margin: clamp(8px, 2vw, 24px) auto 0;
+}
+
+/* ---------- Desktop: linha horizontal ---------- */
+.tl {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tl::before {
+  content: "";
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  top: 50%;
+  height: 6px;
+  margin-top: -3px;
+  border-radius: 6px;
+  background: var(--f-navy);
+  transform-origin: left center;
+}
+
+.tl-item { position: relative; transition: opacity 0.25s ease; }
+
+.tl-btn {
+  display: grid;
+  grid-template-rows: 200px 40px 200px;
+  justify-items: center;
+  width: 100%;
+  height: 440px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tl-arm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  max-width: 250px;
+  padding: 0 10px;
+}
+.is-up .tl-arm   { grid-row: 1; align-self: end; flex-direction: column-reverse; }
+.is-down .tl-arm { grid-row: 3; align-self: start; }
+
+.tl-stem {
+  width: 3px;
+  height: 28px;
+  border-radius: 2px;
+  background: var(--c);
+  transition: transform 0.25s ease;
+}
+.is-up .tl-stem   { transform-origin: bottom; }
+.is-down .tl-stem { transform-origin: top; }
+
+.tl-year {
+  color: var(--c);
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 700;
+  line-height: 1;
+  transition: transform 0.25s ease;
+}
+
+.tl-text {
+  max-width: 230px;
+  color: #2b3150;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.tl-dot {
+  position: relative;
+  z-index: 1;
+  grid-row: 2;
+  align-self: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--c);
+  box-shadow: 0 0 0 0 var(--soft);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* ---------- Hover / foco ---------- */
+.tl-item.is-active .tl-dot { transform: scale(1.3); box-shadow: 0 0 0 9px var(--soft); }
+.tl-item.is-active .tl-stem { transform: scaleY(1.35); }
+.tl-item.is-active .tl-year { transform: scale(1.08); }
+.tl.has-active .tl-item:not(.is-active) { opacity: 0.45; }
+.tl-btn:focus-visible .tl-dot { outline: 3px solid var(--f-red); outline-offset: 4px; }
+
+/* ---------- Tooltip ---------- */
+.tl-tip {
+  --half: 130px;
+  position: absolute;
+  z-index: 5;
+  width: max-content;
+  max-width: min(260px, 70vw);
+  padding: 12px 16px 14px;
+  background: var(--f-navy);
+  color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, 0.28);
+  pointer-events: none;
+  left: clamp(var(--half), var(--left, 50%), calc(100% - var(--half)));
+  animation: tl-fade 0.18s ease both;
+}
+.tl-tip.is-below { top: calc(50% + 34px); transform: translateX(-50%); }
+.tl-tip.is-above { top: calc(50% - 34px); transform: translate(-50%, -100%); }
+.tl-tip p { margin: 0; font-size: 14px; line-height: 1.5; color: #d6dbf2; }
+.tl-tip-tag { display: block; margin-bottom: 4px; color: #ff9aa2; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+
+/* ---------- Entrada ao rolar ---------- */
+.tl-wrap:not(.is-seen) .tl-item { opacity: 0; transform: translateY(12px); }
+.tl-wrap:not(.is-seen) .tl::before { transform: scaleX(0); }
+.tl-wrap.is-seen .tl::before { animation: tl-line 0.9s ease backwards; }
+.tl-wrap.is-seen .tl-item { animation: tl-in 0.55s ease backwards; animation-delay: calc(var(--i) * 0.14s + 0.2s); }
+
+@keyframes tl-line { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes tl-line-y { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes tl-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+@keyframes tl-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Celular: linha do tempo vertical ---------- */
+@media (max-width: 760px) {
+  .tl { grid-template-columns: 1fr; gap: 4px; }
+
+  .tl::before {
+    left: 15px;
+    right: auto;
+    top: 28px;
+    bottom: 28px;
+    width: 6px;
+    height: auto;
+    margin: 0 0 0 -3px;
+    transform-origin: top center;
+  }
+  .tl-wrap.is-seen .tl::before { animation-name: tl-line-y; }
+  .tl-wrap:not(.is-seen) .tl::before { transform: scaleY(0); }
+
+  .tl-btn {
+    grid-template-rows: auto;
+    grid-template-columns: 30px 1fr;
+    justify-items: start;
+    column-gap: 18px;
+    height: auto;
+    padding: 14px 0;
+    text-align: left;
+  }
+
+  .tl-dot { grid-row: 1; grid-column: 1; align-self: start; margin-top: 2px; }
+
+  .is-up .tl-arm,
+  .is-down .tl-arm {
+    grid-row: 1;
+    grid-column: 2;
+    align-self: start;
+    align-items: flex-start;
+    flex-direction: column;
+    max-width: none;
+    padding: 0;
+    gap: 6px;
+  }
+
+  .tl-stem { display: none; }
+  .tl-text { max-width: none; }
+  .tl-tip { display: none; }
+  .tl.has-active .tl-item:not(.is-active) { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-wrap:not(.is-seen) .tl-item { opacity: 1; transform: none; }
+  .tl-wrap:not(.is-seen) .tl::before { transform: none; }
+  .tl-wrap.is-seen .tl::before,
+  .tl-wrap.is-seen .tl-item,
+  .tl-tip { animation: none; }
+  .tl-item, .tl-dot, .tl-stem, .tl-year { transition: none; }
+}

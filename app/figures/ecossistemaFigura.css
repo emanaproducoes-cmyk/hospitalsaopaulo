@@ -1,0 +1,188 @@
+/* Ecossistema digital: diagrama em camadas + tabela de componentes. Todos os seletores começam por .eco-root. */
+.eco-root {
+  --navy: #0b1a40;
+  --red: #a31621;
+  --blue: #0a1f8f;
+  --line: #dfe2ee;
+  --muted: #5b6180;
+  font-family: inherit;
+  display: grid;
+  gap: 22px;
+  overflow-x: clip;
+}
+
+/* ---------- Diagrama ---------- */
+.eco-root .eco-diagram { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 190px; gap: 14px; align-items: stretch; margin-top: 6px; }
+.eco-root .eco-stack { display: grid; gap: 20px; }
+
+.eco-root .eco-layer {
+  position: relative;
+  border: 2px solid var(--c);
+  background: var(--tint);
+  border-radius: 6px;
+  padding: 8px 12px 12px;
+  transition: opacity .18s ease, box-shadow .18s ease;
+}
+/* Seta para a próxima camada */
+.eco-root .eco-layer:not(:last-child)::after {
+  content: "";
+  position: absolute; left: 50%; bottom: -16px;
+  transform: translateX(-50%);
+  border-left: 7px solid transparent; border-right: 7px solid transparent;
+  border-top: 9px solid var(--navy);
+}
+.eco-root .eco-layer-title {
+  margin: 0 0 8px; display: inline-block;
+  font-size: 13px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase;
+  color: var(--c); cursor: pointer; outline: none; border-radius: 4px;
+}
+.eco-root .eco-layer-title:focus-visible { box-shadow: 0 0 0 2px var(--red); }
+.eco-root .eco-chips { display: grid; grid-template-columns: repeat(var(--n, 4), minmax(0, 1fr)); gap: 10px; }
+.eco-root .eco-box {
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  min-height: 48px; padding: 8px 10px; border-radius: 4px;
+  background: var(--c); color: #fff;
+  font-size: 12.5px; font-weight: 700; line-height: 1.3; overflow-wrap: anywhere;
+  cursor: pointer; outline: none;
+  transition: filter .18s ease, transform .18s ease, opacity .18s ease, box-shadow .18s ease;
+}
+.eco-root .eco-box.is-on,
+.eco-root .eco-box:focus-visible { filter: brightness(1.18); transform: translateY(-2px); box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--red); }
+
+/* Esmaecer o que não está ligado ao elemento ativo */
+.eco-root .eco-diagram.has-active .eco-layer:not(.is-on) { opacity: .4; }
+.eco-root .eco-diagram.has-active .eco-layer.is-on .eco-box:not(.is-on) { opacity: .45; }
+.eco-root .eco-diagram.has-active .eco-gov:not(.is-on) { opacity: .4; }
+
+/* Coluna de governança */
+.eco-root .eco-gov {
+  border: 2px solid var(--red); border-radius: 6px; background: #fdf1f2;
+  padding: 10px 10px 6px; transition: opacity .18s ease;
+  display: flex; flex-direction: column;
+}
+.eco-root .eco-gov-title { margin: 0 0 6px; text-align: center; font-size: 13px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; color: var(--red); }
+.eco-root .eco-gov ul { list-style: none; margin: 0; padding: 0; flex: 1; display: flex; flex-direction: column; justify-content: space-around; }
+.eco-root .eco-gov li {
+  margin: 0; padding: 10px 6px; text-align: center;
+  font-size: 12.5px; line-height: 1.35; color: #1c2240;
+  border-top: 1px solid #f0c9cd; cursor: pointer; outline: none; border-radius: 4px;
+  transition: background .18s ease, color .18s ease, opacity .18s ease;
+}
+.eco-root .eco-gov li::before { content: none; }
+.eco-root .eco-gov li:first-child { border-top: 0; }
+.eco-root .eco-gov.is-on li:not(.is-on) { opacity: .45; }
+.eco-root .eco-gov li.is-on,
+.eco-root .eco-gov li:focus-visible { background: #fbe4e6; color: var(--red); font-weight: 700; box-shadow: inset 4px 0 0 var(--red); }
+
+/* ---------- Tooltips ---------- */
+.eco-root .eco-tip,
+.eco-root .eco-tbltip {
+  position: absolute; z-index: 30;
+  display: flex; flex-direction: column; gap: 4px;
+  background: var(--navy); color: #fff;
+  border-radius: 12px; padding: 12px 14px;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, .28);
+  pointer-events: none; text-align: left;
+  animation: eco-in .18s ease both;
+}
+.eco-root .eco-tip {
+  width: min(280px, calc(100% - 16px));
+  --half: min(140px, calc(50% - 8px));
+  left: clamp(var(--half), var(--left, 50%), calc(100% - var(--half)));
+  transform: translate(-50%, 8px);
+}
+.eco-root .eco-tip.above { transform: translate(-50%, calc(-100% - 8px)); }
+.eco-root .eco-tbltip { left: clamp(12px, 24%, 280px); width: min(320px, calc(100% - 24px)); transform: translateY(8px); }
+.eco-root .eco-tbltip.above { transform: translateY(calc(-100% - 8px)); }
+.eco-root .eco-tip-tag { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #ff9aa2; font-weight: 700; }
+.eco-root .eco-tip-title { font-size: 15px; font-weight: 700; line-height: 1.25; color: #fff; }
+.eco-root .eco-tip-body { font-size: 13.5px; line-height: 1.45; color: #d6dbf2; }
+@keyframes eco-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- Tabela (sem overflow:hidden, para os tooltips das etiquetas não serem cortados) ---------- */
+.eco-root .eco-tblwrap { position: relative; }
+.eco-root .eco-tblbox { border: 1px solid var(--line); border-radius: 14px; }
+.eco-root .eco-tbl { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; color: #1c2240; margin: 0; }
+.eco-root .eco-tbl thead th {
+  background: var(--navy); color: #fff; text-align: left;
+  font-weight: 700; font-size: 13.5px; padding: 11px 14px; border: 0;
+}
+.eco-root .eco-tbl thead th:first-child { border-top-left-radius: 13px; }
+.eco-root .eco-tbl thead th:last-child { border-top-right-radius: 13px; }
+.eco-root .eco-tbl tbody tr:last-child td:first-child { border-bottom-left-radius: 13px; }
+.eco-root .eco-tbl tbody tr:last-child td:last-child { border-bottom-right-radius: 13px; }
+.eco-root .eco-tbl tbody td {
+  padding: 11px 14px; border: 0; border-top: 1px solid var(--line);
+  vertical-align: top; text-align: left; line-height: 1.45; background: transparent;
+}
+.eco-root .eco-tbl tbody tr { outline: none; transition: background .18s ease, opacity .18s ease, box-shadow .18s ease; }
+.eco-root .eco-tbl tbody tr:nth-child(even) td { background: #f4f5fa; }
+.eco-root .eco-tbl .eco-td-first { font-weight: 700; color: var(--navy); width: 15%; transition: color .18s ease; }
+.eco-root .eco-tbl tbody tr.is-active td,
+.eco-root .eco-tbl tbody tr:focus-visible td { background: #e4e7f5; }
+.eco-root .eco-tbl tbody tr.is-active td:first-child,
+.eco-root .eco-tbl tbody tr:focus-visible td:first-child { box-shadow: inset 4px 0 0 var(--c, #a31621); color: var(--c, #a31621); }
+.eco-root .eco-tbl.has-active tbody tr:not(.is-active) { opacity: .5; }
+
+.eco-root .eco-mes { color: var(--blue); font-weight: 700; }
+.eco-root .eco-tag { color: var(--red); font-weight: 700; font-size: .85em; letter-spacing: .02em; }
+.eco-root .eco-chip { position: relative; cursor: help; outline: none; border-radius: 4px; }
+.eco-root .eco-chip:focus-visible { box-shadow: 0 0 0 2px var(--red); }
+.eco-root .eco-chip::after {
+  content: attr(data-tip);
+  position: absolute; right: 0; bottom: calc(100% + 8px);
+  width: max-content; max-width: 230px;
+  background: var(--navy); color: #fff;
+  font-size: 12.5px; font-weight: 400; line-height: 1.4; letter-spacing: 0; text-transform: none; white-space: normal;
+  padding: 8px 10px; border-radius: 10px;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, .28);
+  opacity: 0; pointer-events: none; transition: opacity .18s ease; z-index: 40;
+}
+.eco-root .eco-chip:hover::after,
+.eco-root .eco-chip:focus-visible::after { opacity: 1; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .eco-root .eco-tbl { font-size: 13px; }
+  .eco-root .eco-tbl thead th,
+  .eco-root .eco-tbl tbody td { padding: 9px 10px; }
+  .eco-root .eco-box { font-size: 12px; padding: 7px 8px; }
+}
+@media (max-width: 760px) {
+  .eco-root .eco-diagram { grid-template-columns: 1fr; }
+  .eco-root .eco-gov ul { display: grid; grid-template-columns: 1fr 1fr; gap: 0 10px; flex: none; }
+  .eco-root .eco-gov li:nth-child(2) { border-top: 0; }
+  .eco-root .eco-chips { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+  .eco-root .eco-chips { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  .eco-root .eco-box { font-size: 11.5px; padding: 7px 6px; }
+  .eco-root .eco-box:last-child:nth-child(odd) { grid-column: span 2; }
+  .eco-root .eco-layer-title { font-size: 12px; }
+  .eco-root .eco-tbltip { display: none; }
+  .eco-root .eco-tbl thead { display: none; }
+  .eco-root .eco-tbl,
+  .eco-root .eco-tbl tbody,
+  .eco-root .eco-tbl tr,
+  .eco-root .eco-tbl td { display: block; width: 100%; box-sizing: border-box; }
+  .eco-root .eco-tbl tbody tr { padding: 10px 12px; border-top: 1px solid var(--line); }
+  .eco-root .eco-tbl tbody tr:first-child { border-top: 0; }
+  .eco-root .eco-tbl tbody tr:nth-child(even) { background: #f4f5fa; }
+  .eco-root .eco-tbl tbody tr:nth-child(even) td,
+  .eco-root .eco-tbl tbody tr.is-active td { background: transparent; }
+  .eco-root .eco-tbl tbody tr.is-active { background: #e4e7f5; box-shadow: inset 4px 0 0 var(--c, #a31621); }
+  .eco-root .eco-tbl tbody tr.is-active td:first-child { box-shadow: none; }
+  .eco-root .eco-tbl tbody td,
+  .eco-root .eco-tbl .eco-td-first { padding: 3px 0; border: 0; width: 100%; border-radius: 0 !important; }
+  .eco-root .eco-tbl tbody td::before {
+    content: attr(data-label); display: block;
+    font-size: 10.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+  }
+  .eco-root .eco-tbl tbody td.eco-td-first::before { display: none; }
+  .eco-root .eco-tbl tbody td.eco-td-first { font-size: 14.5px; }
+  .eco-root .eco-chip::after { max-width: 200px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .eco-root *,
+  .eco-root *::after { transition: none !important; animation: none !important; }
+}

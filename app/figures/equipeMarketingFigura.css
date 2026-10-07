@@ -29,10 +29,14 @@
   content: ""; position: absolute; left: 50%; bottom: -6px; transform: translateX(-50%);
   border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid var(--navy);
 }
-.eqm-root .eqm-branches { display: block; width: 100%; height: 46px; overflow: visible; }
-.eqm-root .eqm-branches line { transition: stroke-width .18s ease, opacity .18s ease; }
-.eqm-root .eqm-branches line.is-on { stroke-width: 3.5px; }
-.eqm-root .eqm-org.has-active .eqm-branches line:not(.is-on) { opacity: .35; }
+/* Setas: camada SVG por cima do organograma, com as posições medidas no navegador */
+.eqm-root .eqm-gap { height: 52px; width: 100%; }
+.eqm-root .eqm-conn { position: absolute; top: 0; left: 0; overflow: visible; pointer-events: none; z-index: 0; }
+.eqm-root .eqm-conn line { transition: stroke-width .18s ease, opacity .18s ease; }
+.eqm-root .eqm-conn line.is-on { stroke-width: 3.5px; }
+.eqm-root .eqm-org.has-active .eqm-conn line:not(.is-on) { opacity: .35; }
+.eqm-root .eqm-node,
+.eqm-root .eqm-col { position: relative; z-index: 1; }
 
 .eqm-root .eqm-cols { width: 100%; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
 .eqm-root .eqm-col { display: flex; flex-direction: column; gap: 14px; transition: opacity .18s ease; }
@@ -40,11 +44,6 @@
   position: relative; margin: 0; text-align: center;
   font-size: 13.5px; font-weight: 800; letter-spacing: .03em; text-transform: uppercase; color: var(--c);
   cursor: pointer; outline: none; border-radius: 4px; padding: 2px 0;
-}
-/* Ponta da seta sobre o título do núcleo */
-.eqm-root .eqm-col-title::before {
-  content: ""; position: absolute; left: 50%; top: -9px; transform: translateX(-50%);
-  border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid var(--c);
 }
 .eqm-root .eqm-col-title:focus-visible { box-shadow: 0 0 0 2px var(--red); }
 .eqm-root .eqm-box {
@@ -132,7 +131,8 @@
   .eqm-root .eqm-box { font-size: 12.5px; }
 }
 @media (max-width: 760px) {
-  .eqm-root .eqm-branches { display: none; }
+  .eqm-root .eqm-conn,
+  .eqm-root .eqm-gap { display: none; }
   .eqm-root .eqm-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 14px; margin-top: 18px; }
 }
 @media (max-width: 640px) {

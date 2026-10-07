@@ -1,0 +1,75 @@
+/* Figura "ICP, consumidor e jornada": tudo sob .pai-root para vencer regras globais de table/th/td */
+.pai-root { position: relative; color: #1c2240; }
+.pai-root .pai-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pai-root .pai-tablewrap { border: 1px solid #dfe2ee; border-radius: 14px; overflow: hidden; background: #fff; }
+.pai-root .pai-tablewrap + .pai-tablewrap { margin-top: 22px; }
+
+.pai-root table.pai-tbl { width: 100%; margin: 0; border-collapse: collapse; table-layout: fixed; font-size: 14px; line-height: 1.45; color: #1c2240; background: #fff; }
+.pai-root .pai-tbl thead th { background: #0b1a40; color: #fff; text-align: left; font-weight: 700; font-size: 14px; padding: 13px 16px; border: 0; }
+.pai-root .pai-tbl thead th.pai-corner { width: 150px; }
+.pai-root .pai-tbl tbody th,
+.pai-root .pai-tbl tbody td { padding: 14px 16px; vertical-align: top; text-align: left; border: 0; border-top: 1px solid #dfe2ee; transition: opacity 0.18s ease, background 0.18s ease; }
+.pai-root .pai-tbl tbody tr:first-child th,
+.pai-root .pai-tbl tbody tr:first-child td { border-top: 0; }
+.pai-root .pai-tbl tbody th { font-weight: 700; color: #0b1a40; width: 150px; background: transparent; }
+.pai-root .pai-tbl tbody tr:nth-child(even) { background: #f4f5fa; }
+.pai-root .pai-tbl .pai-nb { white-space: nowrap; }
+.pai-root .pai-tbl tbody td { cursor: default; outline: none; }
+
+/* destaque da linha ativa */
+.pai-root .pai-tbl tbody tr.is-active { background: #e4e7f5; }
+.pai-root .pai-tbl tbody tr.is-active > th { box-shadow: inset 4px 0 0 var(--c, #a31621); color: var(--c, #a31621); }
+.pai-root .pai-tbl tbody tr.is-active > td.is-cell { background: #d6dbf1; }
+.pai-root .pai-tbl.has-active tbody tr:not(.is-active) { opacity: 0.5; }
+.pai-root .pai-tbl tbody td:focus-visible { outline: 2px solid #a31621; outline-offset: -2px; }
+
+/* notas e alerta */
+.pai-root .pai-note { margin: 18px 0 0; color: #5b6180; font-size: 14px; line-height: 1.5; outline: none; border-radius: 8px; }
+.pai-root .pai-alert { margin-top: 18px; background: #fbe4e6; border-left: 6px solid #a31621; border-radius: 0 10px 10px 0; padding: 14px 18px; outline: none; }
+.pai-root .pai-alert-tit { margin: 0 0 6px; color: #a31621; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.pai-root .pai-alert-txt { margin: 0; color: #1c2240; font-size: 15px; line-height: 1.5; }
+.pai-root .pai-note:focus-visible,
+.pai-root .pai-alert:focus-visible { outline: 2px solid #a31621; outline-offset: 2px; }
+
+/* tooltip */
+.pai-root .pai-tip { position: absolute; z-index: 20; left: clamp(150px, var(--left, 50%), calc(100% - 150px)); width: 300px; max-width: calc(100% - 16px); transform: translate(-50%, 10px); display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; border-radius: 12px; background: #0b1a40; color: #fff; box-shadow: 0 14px 34px rgba(11, 26, 64, 0.28); pointer-events: none; animation: pai-in 0.18s ease; }
+.pai-root .pai-tip.is-above { transform: translate(-50%, calc(-100% - 10px)); }
+.pai-root .pai-tip-tag { color: #ff9aa2; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.pai-root .pai-tip-tit { font-size: 15px; font-weight: 700; line-height: 1.25; }
+.pai-root .pai-tip-body { color: #d6dbf2; font-size: 13.5px; line-height: 1.4; }
+@keyframes pai-in { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 860px) {
+  .pai-root table.pai-tbl { font-size: 13px; }
+  .pai-root .pai-tbl thead th { font-size: 13px; padding: 11px 12px; }
+  .pai-root .pai-tbl tbody th,
+  .pai-root .pai-tbl tbody td { padding: 11px 12px; }
+  .pai-root .pai-tbl thead th.pai-corner,
+  .pai-root .pai-tbl tbody th { width: 118px; }
+}
+
+/* celular: cada linha vira um cartão */
+@media (max-width: 640px) {
+  .pai-root .pai-tablewrap { border: 0; border-radius: 0; background: transparent; overflow: visible; }
+  .pai-root .pai-tbl thead { display: none; }
+  .pai-root table.pai-tbl,
+  .pai-root .pai-tbl tbody,
+  .pai-root .pai-tbl tbody tr,
+  .pai-root .pai-tbl tbody th,
+  .pai-root .pai-tbl tbody td { display: block; width: 100%; }
+  .pai-root .pai-tbl tbody tr,
+  .pai-root .pai-tbl tbody tr:nth-child(even) { margin-bottom: 12px; border: 1px solid #dfe2ee; border-radius: 12px; background: #fff; overflow: hidden; }
+  .pai-root .pai-tbl tbody th { width: 100%; background: #0b1a40; color: #fff; padding: 10px 14px; border: 0; }
+  .pai-root .pai-tbl tbody tr.is-active > th { color: #fff; box-shadow: none; }
+  .pai-root .pai-tbl tbody td { padding: 10px 14px; border-top: 1px solid #dfe2ee; }
+  .pai-root .pai-tbl tbody tr:first-child th { border-top: 0; }
+  .pai-root .pai-tbl tbody td::before { content: attr(data-label); display: block; margin-bottom: 2px; color: #a31621; font-size: 11px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+  .pai-root .pai-tbl.has-active tbody tr:not(.is-active) { opacity: 1; }
+  .pai-root .pai-tip { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pai-root .pai-tbl tbody th,
+  .pai-root .pai-tbl tbody td { transition: none; }
+  .pai-root .pai-tip { animation: none; }
+}

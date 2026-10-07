@@ -1,0 +1,211 @@
+/* ==========================================================
+   mercadoSom.css — triangulação do SOM, tabela por linha de serviço e leitura de decisão
+   Todos os seletores começam por .som-root para vencer estilos globais.
+   ========================================================== */
+
+.som-root {
+  --f-navy: var(--navy, #0b1a40);
+  --f-red: var(--red, #a31621);
+  --f-line: var(--line, #dfe2ee);
+  --f-muted: var(--muted, #5b6180);
+  display: grid;
+  gap: 32px;
+  margin-top: 28px;
+}
+
+/* ---------- 1) Gráfico ---------- */
+.som-root .som-chart { position: relative; max-width: 860px; margin: 0 auto; }
+.som-root .som-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  font-family: inherit;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.som-root .som-band, .som-root .som-row { outline: none; cursor: pointer; transition: opacity 0.25s ease; }
+.som-root .som-band-rect { transition: fill 0.25s ease; }
+.som-root .som-band.is-active .som-band-rect,
+.som-root .som-band:focus-visible .som-band-rect { fill: #cfd5ec; }
+.som-root .som-svg.has-row .som-row:not(.is-active) { opacity: 0.35; }
+.som-root .som-line { transition: stroke-width 0.25s ease; }
+.som-root .som-row.is-active .som-line,
+.som-root .som-row:focus-visible .som-line { stroke-width: 18; }
+.som-root .som-dot { transition: r 0.25s ease; }
+.som-root .som-row.is-active .som-dot,
+.som-root .som-row:focus-visible .som-dot { r: 12; }
+.som-root .som-row:focus-visible, .som-root .som-band:focus-visible { outline: none; }
+.som-root .som-row:focus-visible .som-base { text-decoration: underline; }
+
+.som-root .som-desktop { display: block; }
+.som-root .som-list { display: none; }
+
+.som-root figcaption { line-height: 1.5; }
+
+/* ---------- Tooltip (gráfico e tabela) ---------- */
+.som-root .som-tip {
+  position: absolute;
+  z-index: 6;
+  width: max-content;
+  max-width: min(290px, 78%);
+  padding: 12px 16px 14px;
+  border-radius: 12px;
+  background: var(--f-navy);
+  color: #fff;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, 0.28);
+  pointer-events: none;
+  animation: som-tip-in 0.18s ease both;
+  --half: 145px;
+  left: clamp(var(--half), var(--left, 50%), calc(100% - var(--half)));
+  transform: translate(-50%, 0);
+}
+.som-root .som-tip strong { display: block; font-size: 15px; line-height: 1.3; }
+.som-root .som-tip p { margin: 6px 0 0; color: #d6dbf2; font-size: 13.5px; line-height: 1.5; }
+.som-root .som-tip-tag { display: block; margin-bottom: 4px; color: #ff9aa2; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+@keyframes som-tip-in { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- 2) Tabela ---------- */
+.som-root .som-h3 { margin: 0 0 14px; color: var(--f-navy); font-size: clamp(19px, 2.2vw, 24px); font-weight: 800; letter-spacing: -0.01em; }
+.som-root .som-tbl-box { position: relative; }
+.som-root .som-tbl-wrap { overflow: hidden; border: 1px solid var(--f-line); border-radius: 14px; background: #fff; }
+
+.som-root .som-tbl { width: 100%; margin: 0; border-collapse: collapse; font-size: 14.5px; line-height: 1.5; text-align: left; }
+.som-root .som-tbl thead th {
+  padding: 14px 16px;
+  background: var(--f-navy);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: left;
+  vertical-align: bottom;
+}
+.som-root .som-tbl thead th:nth-child(1) { width: 17%; }
+.som-root .som-tbl thead th:nth-child(2) { width: 29%; }
+.som-root .som-tbl thead th:nth-child(3) { width: 17%; }
+.som-root .som-tbl thead th:nth-child(4) { width: 15%; }
+
+.som-root .som-tbl tbody tr { outline: none; background: #fff; transition: background 0.2s ease, box-shadow 0.2s ease, opacity 0.25s ease; }
+.som-root .som-tbl tbody tr + tr { border-top: 1px solid var(--f-line); }
+.som-root .som-tbl tbody tr:nth-child(even) { background: #f4f5fa; }
+.som-root .som-tbl tbody tr.is-active,
+.som-root .som-tbl tbody tr:focus-visible { background: #e4e7f5; box-shadow: inset 4px 0 0 var(--c, var(--f-red)); }
+.som-root .som-tbl.has-active tbody tr:not(.is-active) { opacity: 0.5; }
+.som-root .som-tbl tbody tr:focus-visible { outline: 3px solid var(--f-red); outline-offset: -3px; }
+
+.som-root .som-tbl tbody th {
+  padding: 14px 16px;
+  background: transparent;
+  color: var(--f-navy);
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: left;
+  vertical-align: top;
+  transition: color 0.2s ease;
+}
+.som-root .som-tbl tbody tr.is-active th { color: var(--c, var(--f-red)); }
+.som-root .som-tbl tbody td { padding: 14px 16px; color: var(--ink, #1c2240); text-align: left; vertical-align: top; }
+.som-root .som-tbl td.som-som { font-weight: 600; color: var(--f-navy); }
+
+.som-root .som-ano { color: var(--f-red); font-weight: 700; }
+.som-root .som-mes { color: var(--blue, #0a1f8f); font-weight: 700; }
+
+/* ---------- Chips com tooltip ([BENCHMARK], [SEM ACESSO], [DADO: ANS]...) ---------- */
+.som-root .som-chip {
+  position: relative;
+  display: inline-block;
+  color: var(--f-red);
+  font-size: 0.82em;
+  font-weight: 700;
+  cursor: help;
+  outline: none;
+  border-bottom: 1px dotted currentColor;
+}
+.som-root .som-chip-est { color: var(--f-muted); font-size: 1em; }
+.som-root .som-chip::after {
+  content: attr(data-tip);
+  position: absolute;
+  z-index: 8;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  width: max-content;
+  max-width: 240px;
+  padding: 9px 12px;
+  border-radius: 10px;
+  background: var(--f-navy);
+  color: #d6dbf2;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  text-align: left;
+  white-space: normal;
+  box-shadow: 0 10px 26px rgba(11, 26, 64, 0.28);
+  transform: translateX(-50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.18s ease;
+}
+.som-root .som-chip:hover::after,
+.som-root .som-chip:focus-visible::after { opacity: 1; }
+.som-root .som-chip:focus-visible { outline: 2px solid var(--f-red); outline-offset: 2px; }
+
+/* ---------- 3) Leitura de decisão ---------- */
+.som-root .som-callout {
+  padding: 22px 26px 24px;
+  border-left: 6px solid var(--f-red);
+  border-radius: 4px 14px 14px 4px;
+  background: #fbe4e6;
+  transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.som-root .som-callout:hover { box-shadow: 0 14px 30px rgba(163, 22, 33, 0.14); transform: translateY(-2px); }
+.som-root .som-callout-k { margin: 0 0 8px; color: var(--f-red); font-size: 11px; font-weight: 800; letter-spacing: 0.08em; }
+.som-root .som-callout-p { margin: 0; color: #2b1a1e; font-size: clamp(15px, 1.5vw, 17px); line-height: 1.65; }
+
+/* ---------- Responsivo ---------- */
+@media (max-width: 860px) {
+  .som-root .som-tbl { font-size: 14px; }
+  .som-root .som-tbl thead th, .som-root .som-tbl tbody th, .som-root .som-tbl tbody td { padding: 12px 12px; }
+}
+
+@media (max-width: 640px) {
+  .som-root .som-desktop { display: none; }
+  .som-root .som-list { display: grid; gap: 16px; margin: 0 0 14px; padding: 0; list-style: none; }
+  .som-root .som-list li { display: grid; gap: 6px; }
+  .som-root .som-list-head { display: flex; justify-content: space-between; gap: 10px; color: var(--f-navy); font-size: 14.5px; }
+  .som-root .som-list-head span { font-variant-numeric: tabular-nums; }
+  .som-root .som-list-track { position: relative; display: block; height: 14px; border-radius: 99px; background: #eef0f8; }
+  .som-root .som-list-track i { position: absolute; top: 0; bottom: 0; border-radius: 99px; }
+  .som-root .som-list-track u { position: absolute; top: -3px; width: 20px; height: 20px; margin-left: -10px; border-radius: 50%; background: var(--f-red); border: 2px solid #fff; }
+  .som-root .som-list em { color: var(--f-red); font-size: 14px; font-style: normal; font-weight: 700; }
+  .som-root .som-list-band { padding: 12px 14px; border-radius: 10px; background: #e1e3f1; color: var(--f-navy); font-size: 14px; }
+
+  .som-root .som-tip-tbl { display: none; }
+
+  .som-root .som-tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .som-root .som-tbl, .som-root .som-tbl tbody, .som-root .som-tbl tbody tr, .som-root .som-tbl tbody th, .som-root .som-tbl tbody td { display: block; width: 100%; box-sizing: border-box; }
+  .som-root .som-tbl tbody tr { padding: 16px 0 12px; }
+  .som-root .som-tbl tbody th { padding: 0 18px 8px; color: var(--f-red); font-size: 16px; }
+  .som-root .som-tbl tbody td { padding: 4px 18px; }
+  .som-root .som-tbl tbody td::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--f-muted);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+}
+
+/* O tooltip da tabela sempre aparece abaixo/acima da linha, alinhado à esquerda */
+.som-root .som-tip-tbl { left: 17%; transform: none; margin-left: 16px; --half: 0px; }
+.som-root .som-tip-tbl.is-above { transform: translateY(calc(-100% - 8px)); }
+.som-root .som-tip-tbl.is-below { transform: translateY(8px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .som-root .som-band, .som-root .som-row, .som-root .som-line, .som-root .som-dot, .som-root .som-tbl tbody tr, .som-root .som-callout { transition: none; }
+  .som-root .som-tip { animation: none; }
+  .som-root .som-chip::after { transition: none; }
+}

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./globals.css";
 import "./hero-soft.css";
+import "./dossie.css";
 
 type CardKind = "timeline" | "rings" | "quadrants" | "stakeholders" | "map" | "bars" | "funnel" | "line" | "radar" | "palette" | "position" | "voice" | "growth" | "loops" | "layers" | "tools" | "journey" | "assistant" | "hub" | "dashboard" | "gantt" | "org" | "steps" | "training" | "scale";
 type CardData = { id: string; title: string; benefit: string; kind: CardKind; eyebrow?: string; sentence: string; read: string; bullets: string[]; technical: string; tag: string };
@@ -129,10 +130,59 @@ function PlanFigure({ card }: { card: CardData }) {
   const crop = pdfCropByCard[card.id] ?? "origem";
   return <figure className="pdf-visual"><img src={`/assets/plan-crops/${crop}.webp`} alt={`Gráfico ou mapa do Plano de Marketing, Branding e Growth: ${card.title}`} loading="lazy" /></figure>;
 }
+const fichaInstitucional: { dim: string; info: string }[] = [
+  { dim: "Natureza", info: "Hospital geral privado, conduzido por grupo de médicos sócios" },
+  { dim: "Localização", info: "Cacoal, Rondônia: Região de Saúde Café, Macrorregião de Saúde II" },
+  { dim: "Cadastro", info: "CNES 2784637; 23 leitos existentes no módulo consultado (fotografia cadastral)" },
+  { dim: "Serviços", info: "Consultas, centro cirúrgico (eletivas, urgência e emergência), internação, pronto atendimento, maternidade e tomografia" },
+  { dim: "Especialidades", info: "33 listadas, incluindo cardiologia, nefrologia, cirurgia vascular, ortopedia, obstetrícia, pediatria, cardiopediatria, genética e psiquiatria" },
+  { dim: "Corpo clínico", info: "Profissionais identificados com fotos, CRM e, em geral, RQE" },
+  { dim: "Transparência de acesso", info: "Informa os limites do pronto atendimento ao lado da oferta (sem check-up eletivo, sem observação acima de 24 h, sem garantia de vaga)" },
+  { dim: "Reputação pública (referência de partida)", info: "Google Maps 3,9/5 em 137 avaliações; Doctoralia 5/5 em 19 opiniões. São universos diferentes: nunca somar médias; exibir n, plataforma e janela" },
+  { dim: "Redes sociais", info: "Instagram e Facebook ativos; métricas não acessadas nesta rodada" },
+];
+
+function DossieCard({ card }: { card: CardData }) {
+  return <article className="editorial-session dossie">
+    <div className="session-copy">
+      <div className="session-kicker"><span>{card.tag}</span><span className="session-icon" aria-hidden="true">{icons[card.kind]}</span></div>
+      <h3>{card.title}</h3>
+      <p className="session-benefit">{card.benefit}</p>
+
+      <div className="dossie-tese">
+        <p className="dossie-label">TESE</p>
+        <p className="dossie-lead">O Hospital e Maternidade São Paulo (HMSP) tem mais de <strong>quatro décadas</strong> de presença em Cacoal e é conduzido <strong>desde 1996</strong> por um <strong>grupo de médicos sócios</strong>.</p>
+        <p className="dossie-statement">A vantagem do hospital <span className="dossie-caps">não é tamanho</span>: é ser <strong>a casa de médicos locais e de famílias da praça</strong>.</p>
+        <p className="dossie-intro">Este <span className="dossie-caps">Plano de Marketing</span> organiza esse capital em um <strong>sistema de crescimento</strong>:</p>
+        <div className="dossie-pillars">
+          <div className="dossie-pillar"><b>Marca de família</b><span>com linguagem única</span></div>
+          <div className="dossie-pillar"><b>Rede de médicos</b><span>e empresas parceiras</span></div>
+          <div className="dossie-pillar"><b>Equipe interna</b><span>de marketing</span></div>
+          <div className="dossie-pillar"><b>Ecossistema digital</b><span>de inteligência que coloca toda a informação diante da diretoria</span></div>
+        </div>
+      </div>
+
+      <p className="session-reading">{card.read}</p>
+      <ul>{card.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul>
+      <p className="session-technical">{card.technical}</p>
+    </div>
+
+    <div className="dossie-ficha">
+      <h4 className="dossie-ficha-title">Ficha institucional</h4>
+      <div className="dossie-table-wrap">
+        <table className="dossie-table">
+          <thead><tr><th scope="col">Dimensão</th><th scope="col">Informação</th></tr></thead>
+          <tbody>{fichaInstitucional.map((row) => <tr key={row.dim}><th scope="row">{row.dim}</th><td>{row.info}</td></tr>)}</tbody>
+        </table>
+      </div>
+    </div>
+  </article>;
+}
+
 function SectionBlock({ section }: { section: SectionData }) {
   return <section className={`content-section section-shell ${section.id === "hospital" ? "first-section" : ""}`} id={section.id}>
     <div className="section-intro"><div className="section-number">{section.number}</div><p className="eyebrow">{section.eyebrow}</p><h2>{section.title}</h2><p>{section.message}</p></div>
-    <div className="editorial-sessions">{section.cards.map((card) => <article className="editorial-session" key={card.id}>
+    <div className="editorial-sessions">{section.cards.map((card) => card.id === "origem" ? <DossieCard key={card.id} card={card} /> : <article className="editorial-session" key={card.id}>
       <div className="session-copy"><div className="session-kicker"><span>{card.tag}</span><span className="session-icon" aria-hidden="true">{icons[card.kind]}</span></div><h3>{card.title}</h3><p className="session-benefit">{card.benefit}</p><p className="session-sentence"><strong>TESE</strong>{card.sentence}</p><p className="session-reading">{card.read}</p><ul>{card.bullets.map((bullet) => <li key={bullet}>{bullet}</li>)}</ul><p className="session-technical">{card.technical}</p></div>
       <PlanFigure card={card} />
     </article>)}</div>

@@ -21,6 +21,7 @@ import Ecossistema from "./figures/Ecossistema";
 import IntranetSetores from "./figures/IntranetSetores";
 import ComponentesSoftwares from "./figures/ComponentesSoftwares";
 import PainelDiretoria from "./figures/PainelDiretoria";
+import Implantacao from "./figures/Implantacao";
 
 type CardKind = "timeline" | "rings" | "quadrants" | "stakeholders" | "map" | "bars" | "funnel" | "line" | "radar" | "palette" | "position" | "voice" | "growth" | "loops" | "layers" | "tools" | "journey" | "assistant" | "hub" | "dashboard" | "gantt" | "org" | "steps" | "training" | "scale";
 
@@ -313,10 +314,10 @@ export default function Home() {
 }
 
 /* Imagens .webp (recortes do PDF): espaço reservado abaixo do texto até os gráficos serem criados.
-   "envolvidos", "praca", "mercado", "competicao", "natalidade", "paciente-ideal", "jornada", "forca-marca", "posicionamento", "gerar", "camadas", "intranet", "ferramentas" e "painel" saíram desta lista porque agora são desenhados em código (figuras em app/figures). */
+   "envolvidos", "praca", "mercado", "competicao", "natalidade", "paciente-ideal", "jornada", "forca-marca", "posicionamento", "gerar", "camadas", "intranet", "ferramentas", "painel" e "implantacao" saíram desta lista porque agora são desenhados em código (figuras em app/figures). */
 const pdfCropByCard: Record<string, string> = {
   origem: "origem", ambiente: "ambiente", situacao: "situacao",
-  contato: "contato", assistente: "assistente", implantacao: "implantacao",
+  contato: "contato", assistente: "assistente",
   organograma: "organograma",
 };
 /* Figuras já redesenhadas em SVG/CSS. Cada nova figura entra aqui; o .webp só é usado enquanto não existir.
@@ -339,6 +340,7 @@ const figureByCard: Record<string, ComponentType> = {
   intranet: IntranetSetores,
   ferramentas: ComponentesSoftwares,
   painel: PainelDiretoria,
+  implantacao: Implantacao,
 };
 
 function PlanFigure({ card }: { card: CardData }) {

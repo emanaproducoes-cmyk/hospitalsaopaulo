@@ -7,6 +7,7 @@ import "./dossie.css";
 import Ambiente from "./figures/Ambiente";
 import Origem from "./figures/Origem";
 import Situacao from "./figures/Situacao";
+import Envolvidos from "./figures/Envolvidos";
 
 type CardKind = "timeline" | "rings" | "quadrants" | "stakeholders" | "map" | "bars" | "funnel" | "line" | "radar" | "palette" | "position" | "voice" | "growth" | "loops" | "layers" | "tools" | "journey" | "assistant" | "hub" | "dashboard" | "gantt" | "org" | "steps" | "training" | "scale";
 
@@ -76,7 +77,7 @@ const sections: SectionData[] = [
           lead: "**Cacoal** é a terceira maior cidade da **Macrorregião II**, polo da Região Café e referência materno-infantil para vizinhos.",
           statement: "A população envelhece e a renda é sensível, o que estreita o mercado privado alcançável: o crescimento virá de **convênios corporativos, alcance regional e eficiência**, mais do que de !!volume genérico!!.",
         },
-        read: "A leitura territorial combina população, acesso privado e áreas de influência. O objetivo é escolher melhor onde cada esforço faz sentido.", bullets: ["735.852 habitantes na Macrorregião II (população, foto de 2022).", "214.252 de alcance ativo são uma hipótese de planejamento.", "Cacoal atrai nascimentos de outras localidades da região."], technical: "[DADO] SESAU/RO e Censo 2022;  alcance ativo.", tag: "Macrorregião II"
+        read: "A leitura territorial combina população, acesso privado e áreas de influência. O objetivo é escolher melhor onde cada esforço faz sentido.", bullets: ["735.852 habitantes na Macrorregião II (população, foto de 2022).", "214.252 é o alcance ativo considerado no planejamento.", "Cacoal atrai nascimentos de outras localidades da região."], technical: "[DADO] SESAU/RO e Censo 2022;  alcance ativo.", tag: "Macrorregião II"
       },
       {
         id: "competicao", title: "Concorrência privada na praça", benefit: "Você posiciona o São Paulo sem imitar ninguém.", kind: "position",
@@ -136,7 +137,7 @@ const sections: SectionData[] = [
           lead: "A marca do HMSP tem **ativos raros** (nome estabelecido, símbolo de coração em azul e vermelho, fundador, gestão médica, corpo clínico identificado).",
           statement: "A recomendação é fortalecer a !!distinção!! (médicos da região, família) e **padronizar a expressão da marca** em todos os pontos de contato.",
         },
-        read: "A partida 5,7 e a meta 7,5 são hipóteses de trabalho. O número só ganha sentido ao ser medido com pessoas reais.", bullets: ["Seis dimensões formam o ponto de partida.", "5,7 → 7,5 é uma meta de planejamento, não promessa.", "Entrevistas e sinais digitais recalibram a leitura."], technical: " Brand equity inicial 5,7 e meta 7,5.", tag: "Radar 6 dimensões"
+        read: "A partida 5,7 e a meta 7,5 são referências de trabalho. O número só ganha sentido ao ser medido com pessoas reais.", bullets: ["Seis dimensões formam o ponto de partida.", "5,7 → 7,5 é uma meta de planejamento, não promessa.", "Entrevistas e sinais digitais recalibram a leitura."], technical: " Brand equity inicial 5,7 e meta 7,5.", tag: "Radar 6 dimensões"
       },
       {
         id: "posicionamento", title: "Posicionamento", benefit: "Você diz em uma frase por que o São Paulo existe.", kind: "position",
@@ -298,9 +299,10 @@ export default function Home() {
   </main>;
 }
 
-/* Imagens .webp (recortes do PDF): espaço reservado abaixo do texto até os gráficos serem criados. */
+/* Imagens .webp (recortes do PDF): espaço reservado abaixo do texto até os gráficos serem criados.
+   "envolvidos" saiu desta lista porque agora é desenhado em código (figures/Envolvidos.tsx). */
 const pdfCropByCard: Record<string, string> = {
-  origem: "origem", ambiente: "ambiente", situacao: "situacao", envolvidos: "envolvidos", praca: "praca", competicao: "competicao",
+  origem: "origem", ambiente: "ambiente", situacao: "situacao", praca: "praca", competicao: "competicao",
   mercado: "mercado", natalidade: "natalidade", "paciente-ideal": "paciente-ideal", jornada: "jornada",
   "forca-marca": "forca-marca", posicionamento: "posicionamento",
   gerar: "gerar", camadas: "camadas", ferramentas: "ferramentas", intranet: "intranet",
@@ -313,6 +315,7 @@ const figureByCard: Record<string, ComponentType> = {
   origem: Origem,
   ambiente: Ambiente,
   situacao: Situacao,
+  envolvidos: Envolvidos,
 };
 
 function PlanFigure({ card }: { card: CardData }) {

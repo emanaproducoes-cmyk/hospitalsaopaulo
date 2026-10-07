@@ -64,11 +64,23 @@ const INTERNOS = CARGOS.filter((c) => !c.retainer);
 const TOT_MIN = INTERNOS.reduce((s, c) => s + c.min, 0);
 const TOT_MAX = INTERNOS.reduce((s, c) => s + c.max, 0);
 
+/* Faixa exatamente como aparece na tabela (ex.: "R$ 9.500 a 10.000") */
+const faixa = (c: Cargo) => `${brl(c.min)} a ${c.max.toLocaleString("pt-BR")}`;
+const faixaTxt = (c: Cargo) => (c.retainer ? `Retainer: ${faixa(c)}/mês (contrato PJ).` : `Faixa salarial: ${faixa(c)}/mês.`);
+
 function tipCargo(i: number): TipContent {
   const c = CARGOS[i];
-  return c.retainer
-    ? { tag: `Início no mês ${c.inicio} · contrato PJ`, title: c.cargo, body: `Retainer de ${brl(c.min)} a ${brl(c.max)}/mês. Como é PJ, o fator de 1,7 dos encargos não se aplica.` }
-    : { tag: `Início no mês ${c.inicio} · CLT`, title: c.cargo, body: `Custo estimado para o hospital (× 1,7): ${brl(Math.round(c.min * FATOR))} a ${brl(Math.round(c.max * FATOR))}/mês.` };
+  return {
+    tag: `Início no mês ${c.inicio} · ${c.retainer ? "contrato PJ" : "CLT"}`,
+    title: c.cargo,
+    body: `${faixaTxt(c)} Início no mês ${c.inicio}.`,
+  };
+}
+/* Texto salarial de uma caixa do organograma (uma ou mais linhas da tabela) */
+function salarioCaixa(rows: number[]) {
+  if (!rows.length) return "";
+  if (rows.length === 1) return faixaTxt(CARGOS[rows[0]]);
+  return rows.map((x) => `${CARGOS[x].cargo}: ${faixa(CARGOS[x])}/mês, a partir do mês ${CARGOS[x].inicio}`).join("; ") + ".";
 }
 
 type Ativo = { t: "row"; i: number } | { t: "caixa"; r: number; c: number } | { t: "ramo"; r: number } | { t: "topo"; k: "diretoria" | "coord" } | null;
@@ -76,6 +88,32 @@ type Ativo = { t: "row"; i: number } | { t: "caixa"; r: number; c: number } | { 
 export default function EquipeMarketing() {
   const rootRef = useRef<HTMLDivElement>(null);
   const orgRef = useRef<HTMLDivElement>(null);
+  const coordRef = useRef<HTMLDivElement>(null);
+  const titleRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  type Seta = { x1: number; y1: number; x2: number; y2: number; cor: string };
+  const [conn, setConn] = useState<{ w: number; h: number; setas: Seta[] } | null>(null);
+
+  /* Mede a posição real da coordenação e dos títulos dos núcleos para as setas saírem e chegarem no centro certo */
+  useEffect(() => {
+    const medir = () => {
+      const o = orgRef.current, c = coordRef.current;
+      if (!o || !c) return;
+      const or = o.getBoundingClientRect(), cr = c.getBoundingClientRect();
+      const x1 = cr.left + cr.width / 2 - or.left, y1 = cr.bottom - or.top + 2;
+      const setas: Seta[] = [];
+      titleRefs.current.forEach((t, i) => {
+        if (!t) return;
+        const tr = t.getBoundingClientRect();
+        setas.push({ x1, y1, x2: tr.left + tr.width / 2 - or.left, y2: tr.top - or.top - 2, cor: RAMOS[i].cor });
+      });
+      setConn({ w: or.width, h: or.height, setas });
+    };
+    medir();
+    const ro = new ResizeObserver(medir);
+    if (orgRef.current) ro.observe(orgRef.current);
+    window.addEventListener("resize", medir);
+    return () => { ro.disconnect(); window.removeEventListener("resize", medir); };
+  }, []);
   const tblRef = useRef<HTMLDivElement>(null);
   const [ativo, setAtivo] = useState<Ativo>(null);
   const [tip, setTip] = useState<(TipContent & { top: number; left: number; above: boolean; onde: "org" | "tbl" }) | null>(null);
@@ -139,27 +177,43 @@ export default function EquipeMarketing() {
 
         {/* ---------- Organograma ---------- */}
         <div className={`eqm-org${ativo ? " has-active" : ""}`} ref={orgRef}>
+          {conn && (
+            <svg className="eqm-conn" width={conn.w} height={conn.h} viewBox={`0 0 ${conn.w} ${conn.h}`} aria-hidden="true">
+              <defs>
+                {RAMOS.map((r, i) => (
+                  <marker key={r.titulo} id={`eqm-ah-${i}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                    <path d="M0,0 L10,5 L0,10 z" fill={r.cor} />
+                  </marker>
+                ))}
+              </defs>
+              {conn.setas.map((l, i) => (
+                <line
+                  key={i} className={ramoOn(i) ? "is-on" : ""}
+                  x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
+                  stroke={l.cor} strokeWidth={2} markerEnd={`url(#eqm-ah-${i})`}
+                />
+              ))}
+            </svg>
+          )}
           <div
             className={`eqm-node eqm-dir${dirOn ? " is-on" : ""}`} role="button"
             {...props({ t: "topo", k: "diretoria" }, { tag: "Topo da estrutura", title: "Diretoria-sócia", body: TOPO.diretoria.body })}
           >{TOPO.diretoria.linhas.map((l) => <span key={l}>{l}</span>)}</div>
           <div className="eqm-down" aria-hidden="true" />
           <div
+            ref={coordRef}
             className={`eqm-node eqm-coord${coordOn ? " is-on" : ""}`} role="button"
-            {...props({ t: "topo", k: "coord" }, { ...tipCargo(0), tag: `Responde à diretoria · início no mês ${CARGOS[0].inicio}`, title: "Coordenação de Marketing e Inteligência", body: `${TOPO.coord.body} ${tipCargo(0).body}` })}
+            {...props({ t: "topo", k: "coord" }, { tag: `Responde à diretoria · início no mês ${CARGOS[0].inicio}`, title: "Coordenação de Marketing e Inteligência", body: `${TOPO.coord.body} ${faixaTxt(CARGOS[0])}` })}
           >{TOPO.coord.linhas.map((l) => <span key={l}>{l}</span>)}</div>
 
-          {/* Setas da coordenação para os quatro núcleos */}
-          <svg className="eqm-branches" viewBox="0 0 1000 50" preserveAspectRatio="none" aria-hidden="true">
-            {RAMOS.map((r, i) => (
-              <line key={r.titulo} className={ramoOn(i) ? "is-on" : ""} x1={500} y1={0} x2={125 + i * 250} y2={46} stroke={r.cor} strokeWidth={2} vectorEffect="non-scaling-stroke" />
-            ))}
-          </svg>
+          {/* Espaço das setas (desenhadas pela camada .eqm-conn, com posições medidas) */}
+          <div className="eqm-gap" aria-hidden="true" />
 
           <div className="eqm-cols">
             {RAMOS.map((ramo, r) => (
               <div key={ramo.titulo} className={`eqm-col${ramoOn(r) ? " is-on" : ""}`} style={{ "--c": ramo.cor } as CSSProperties}>
                 <p
+                  ref={(el) => { titleRefs.current[r] = el; }}
                   className="eqm-col-title" role="button"
                   {...props({ t: "ramo", r }, {
                     tag: "Núcleo da equipe",
@@ -169,14 +223,13 @@ export default function EquipeMarketing() {
                 >{ramo.titulo}</p>
                 {ramo.caixas.map((cx, c) => {
                   const nome = cx.linhas.join(" ");
-                  const cargo = cx.rows.length ? tipCargo(cx.rows[0]) : null;
                   return (
                     <div
                       key={cx.id} className={`eqm-node eqm-box${caixaOn(r, c) ? " is-on" : ""}`} role="button"
                       {...props({ t: "caixa", r, c }, {
                         tag: cx.rows.length ? `${ramo.titulo} · início no mês ${cx.rows.map((x) => CARGOS[x].inicio).join(" e ")}` : `${ramo.titulo} · equipe atual`,
                         title: nome,
-                        body: cx.body + (cargo && cx.id !== "stack" ? ` ${cargo.body}` : ""),
+                        body: cx.id === "stack" ? cx.body : `${cx.body} ${salarioCaixa(cx.rows)}`.trim(),
                       })}
                     >{cx.linhas.map((l) => <span key={l}>{l}</span>)}</div>
                   );

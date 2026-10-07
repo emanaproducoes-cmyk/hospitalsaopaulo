@@ -1,20 +1,17 @@
-/* Efeitos de hover dos capítulos e dos cards (arquivo novo, importado no page.tsx).
+/* Efeitos de hover dos capítulos, subtítulos, cards e dossiê (importado no page.tsx, depois do dossie.css).
    Só acrescenta efeitos: não altera tamanhos, margens nem posições já definidas no site. */
 
-/* ---------- Títulos dos capítulos ---------- */
+/* ---------- I. Títulos dos capítulos (sem sublinhado) ---------- */
 .content-section .section-intro h2,
 .decisions .section-intro h2,
 .saulo-section .saulo-copy h2 {
-  text-decoration-line: underline;
-  text-decoration-color: transparent;
-  text-decoration-thickness: 3px;
-  text-underline-offset: 10px;
-  transition: text-decoration-color .25s ease, color .25s ease;
+  transition: color .25s ease, transform .25s ease;
 }
 .content-section .section-intro:hover h2,
 .decisions .section-intro:hover h2,
 .saulo-section .saulo-copy:hover h2 {
-  text-decoration-color: #a31621;
+  color: #a31621;
+  transform: translateX(8px);
 }
 
 /* Número e sobretítulo do capítulo acompanham o hover */
@@ -22,13 +19,30 @@
 .content-section .section-intro .eyebrow,
 .decisions .section-intro .eyebrow,
 .saulo-section .saulo-copy .eyebrow {
-  transition: color .25s ease, opacity .25s ease;
+  transition: color .25s ease;
 }
 .content-section .section-intro:hover .section-number,
 .content-section .section-intro:hover .eyebrow,
 .decisions .section-intro:hover .eyebrow,
 .saulo-section .saulo-copy:hover .eyebrow {
   color: #a31621;
+}
+
+/* ---------- II. Subtítulos dentro das seções (cada um reage sozinho) ---------- */
+.editorial-session .session-copy h3,
+.editorial-session .session-benefit,
+.editorial-session .dossie-label,
+.editorial-session .dossie-ficha-title,
+.editorial-session .fig-heading {
+  transition: color .25s ease, transform .25s ease;
+}
+.editorial-session .session-copy h3:hover,
+.editorial-session .session-benefit:hover,
+.editorial-session .dossie-label:hover,
+.editorial-session .dossie-ficha-title:hover,
+.editorial-session .fig-heading:hover {
+  color: #a31621;
+  transform: translateX(6px);
 }
 
 /* ---------- Cards dos capítulos ---------- */
@@ -41,12 +55,6 @@
 }
 .editorial-sessions .editorial-session:focus-within {
   box-shadow: inset 4px 0 0 #a31621, 0 18px 40px rgba(11, 26, 64, .10);
-}
-.editorial-sessions .editorial-session .session-copy h3 {
-  transition: color .25s ease;
-}
-.editorial-sessions .editorial-session:hover .session-copy h3 {
-  color: #a31621;
 }
 .editorial-sessions .editorial-session .session-icon {
   transition: transform .25s ease;
@@ -64,18 +72,109 @@
   box-shadow: 0 16px 34px rgba(11, 26, 64, .14);
 }
 
-/* Celular: sem deslocamento (o toque não tem "hover" de verdade) */
+/* ---------- Dossiê: quatro pilares (hover + tooltip) ---------- */
+.dossie-pillars .dossie-pillar {
+  position: relative;
+  cursor: help;
+  outline: none;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, background .2s ease, opacity .2s ease;
+}
+.dossie-pillars .dossie-pillar:hover,
+.dossie-pillars .dossie-pillar:focus-visible {
+  transform: translateY(-4px);
+  border-color: #a31621;
+  background: #f4f5fa;
+  box-shadow: inset 0 2px 0 #a31621, 0 16px 34px rgba(11, 26, 64, .14);
+}
+.dossie-pillars:hover .dossie-pillar:not(:hover) { opacity: .6; }
+.dossie-pillars .dossie-pillar b { transition: color .2s ease; }
+.dossie-pillars .dossie-pillar:hover b,
+.dossie-pillars .dossie-pillar:focus-visible b { color: #a31621; }
+.dossie-pillars .dossie-pillar[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute; left: 50%; bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  width: max-content; max-width: 260px;
+  background: #0b1a40; color: #fff;
+  font-size: 13px; font-weight: 400; line-height: 1.45; text-align: left;
+  padding: 10px 12px; border-radius: 12px;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, .28);
+  opacity: 0; pointer-events: none; transition: opacity .18s ease; z-index: 40;
+}
+.dossie-pillars .dossie-pillar:hover::after,
+.dossie-pillars .dossie-pillar:focus-visible::after { opacity: 1; }
+
+/* ---------- Dossiê: tabela "Ficha institucional" (hover + tooltip) ---------- */
+.dossie-ficha { position: relative; }
+.dossie-table tbody tr {
+  outline: none;
+  cursor: default;
+  transition: background .18s ease, opacity .18s ease, box-shadow .18s ease;
+}
+.dossie-table tbody tr th { transition: color .18s ease; }
+.dossie-table tbody tr.is-active,
+.dossie-table tbody tr:focus-visible {
+  background: #e4e7f5;
+  box-shadow: inset 4px 0 0 #a31621;
+}
+.dossie-table tbody tr.is-active th,
+.dossie-table tbody tr:focus-visible th { color: #a31621; }
+.dossie-table.has-active tbody tr:not(.is-active) { opacity: .5; }
+
+.dossie-ficha .dossie-tip {
+  position: absolute; z-index: 30;
+  left: clamp(12px, 28%, 320px);
+  width: min(320px, calc(100% - 24px));
+  display: flex; flex-direction: column; gap: 4px;
+  background: #0b1a40; color: #fff;
+  border-radius: 12px; padding: 12px 14px;
+  box-shadow: 0 14px 34px rgba(11, 26, 64, .28);
+  pointer-events: none; text-align: left;
+  transform: translateY(8px);
+  animation: dossie-tip-in .18s ease both;
+}
+.dossie-ficha .dossie-tip.above { transform: translateY(calc(-100% - 8px)); }
+.dossie-ficha .dossie-tip-tag { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #ff9aa2; font-weight: 700; }
+.dossie-ficha .dossie-tip-title { font-size: 15px; font-weight: 700; line-height: 1.25; color: #fff; }
+.dossie-ficha .dossie-tip-body { font-size: 13.5px; line-height: 1.45; color: #d6dbf2; }
+@keyframes dossie-tip-in { from { opacity: 0; } to { opacity: 1; } }
+
+@media (max-width: 640px) {
+  .dossie-ficha .dossie-tip { display: none; }
+  .dossie-pillars .dossie-pillar[data-tip]::after { max-width: 220px; }
+}
+
+/* Celular: sem deslocamentos (o toque não tem "hover" de verdade) */
 @media (hover: none) {
   .editorial-sessions .editorial-session:hover,
-  .decisions .decision-card:hover { transform: none; }
+  .decisions .decision-card:hover,
+  .content-section .section-intro:hover h2,
+  .decisions .section-intro:hover h2,
+  .saulo-section .saulo-copy:hover h2,
+  .editorial-session .session-copy h3:hover,
+  .editorial-session .session-benefit:hover,
+  .editorial-session .dossie-label:hover,
+  .editorial-session .dossie-ficha-title:hover,
+  .editorial-session .fig-heading:hover { transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .content-section .section-intro h2,
+  .decisions .section-intro h2,
+  .saulo-section .saulo-copy h2,
+  .editorial-session .session-copy h3,
+  .editorial-session .session-benefit,
+  .editorial-session .dossie-label,
+  .editorial-session .dossie-ficha-title,
+  .editorial-session .fig-heading,
   .editorial-sessions .editorial-session,
   .editorial-sessions .editorial-session .session-icon,
-  .decisions .decision-card { transition: none; }
+  .decisions .decision-card,
+  .dossie-pillars .dossie-pillar,
+  .dossie-table tbody tr { transition: none; }
+  .dossie-ficha .dossie-tip { animation: none; }
   .editorial-sessions .editorial-session:hover,
   .editorial-sessions .editorial-session:hover .session-icon,
-  .decisions .decision-card:hover { transform: none; }
+  .decisions .decision-card:hover,
+  .dossie-pillars .dossie-pillar:hover { transform: none; }
 }

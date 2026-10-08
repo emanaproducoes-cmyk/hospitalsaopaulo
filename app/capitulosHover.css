@@ -179,29 +179,32 @@
   .dossie-pillars .dossie-pillar:hover { transform: none; }
 }
 
-/* ---------- Logo do HMSP no header: zoom ao passar o mouse ---------- */
+/* ---------- Zoom do logo do header e da foto do Saulo ----------
+   Usa a propriedade "scale" (independente de "transform") com !important, para funcionar mesmo que
+   o globals.css/hero-soft.css já usem transform ou animação nessas imagens. O zoom continua ativo
+   para quem pede menos movimento; só a transição é desligada. */
+.site-header .brand {
+  position: relative;
+  z-index: 2;
+}
 .site-header .brand img {
-  transition: transform .3s ease;
   transform-origin: center;
+  transition: scale .3s ease;
 }
 .site-header .brand:hover img,
 .site-header .brand:focus-visible img {
-  transform: scale(1.18);
+  scale: 1.18 !important;
 }
 
-/* ---------- Foto do Saulo Rosa (Quem vai executar): zoom ao passar o mouse ---------- */
 .saulo-section .portrait-frame img {
-  transition: transform .45s ease;
   transform-origin: center;
+  transition: scale .45s ease;
 }
 .saulo-section .portrait-frame:hover img {
-  transform: scale(1.06);
+  scale: 1.06 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .site-header .brand img,
   .saulo-section .portrait-frame img { transition: none; }
-  .site-header .brand:hover img,
-  .site-header .brand:focus-visible img,
-  .saulo-section .portrait-frame:hover img { transform: none; }
 }

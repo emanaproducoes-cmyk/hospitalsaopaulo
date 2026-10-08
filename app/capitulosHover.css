@@ -178,3 +178,30 @@
   .decisions .decision-card:hover,
   .dossie-pillars .dossie-pillar:hover { transform: none; }
 }
+
+/* ---------- Logo do HMSP no header: zoom ao passar o mouse ---------- */
+.site-header .brand img {
+  transition: transform .3s ease;
+  transform-origin: center;
+}
+.site-header .brand:hover img,
+.site-header .brand:focus-visible img {
+  transform: scale(1.18);
+}
+
+/* ---------- Foto do Saulo Rosa (Quem vai executar): zoom ao passar o mouse ---------- */
+.saulo-section .portrait-frame img {
+  transition: transform .45s ease;
+  transform-origin: center;
+}
+.saulo-section .portrait-frame:hover img {
+  transform: scale(1.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header .brand img,
+  .saulo-section .portrait-frame img { transition: none; }
+  .site-header .brand:hover img,
+  .site-header .brand:focus-visible img,
+  .saulo-section .portrait-frame:hover img { transform: none; }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import "./figures.css";
 import "./situacao.css";
 
@@ -20,17 +20,30 @@ const care: Care[] = [
   { id: "empresarial", title: "Saúde empresarial", color: "#c07f20", soft: "rgba(192,127,32,0.30)", tag: "Linha a desenvolver", text: "Check-up, saúde ocupacional e convênio empresarial (a desenvolver)", tip: "Empresas e cooperativas estão entre os públicos que decidem." },
 ];
 
-const perfil: { el: string; read: string }[] = [
-  { el: "Personalidade de marca", read: "Cuidador (principal), com traço de Sábio: zelo, proximidade, clareza técnica." },
-  { el: "Ativos proprietários", read: "Nome estabelecido, símbolo de coração em azul e vermelho, fundador, gestão médica desde 1996, corpo clínico identificado, Parto Humanizado." },
-  { el: "Públicos que decidem", read: "Famílias jovens, adultos de 40 a 69 anos, empresas e cooperativas, médicos que internam e operam." },
-  { el: "Vantagem competitiva potencial", read: "“Conduzido por médicos da região desde 1996”: um argumento que concorrentes não replicam em uma semana." },
-  { el: "Sensibilidade", read: "Concentração de decisão e relacionamento em poucas pessoas: o plano cria processos e equipe para que o conhecimento seja institucional." },
+const perfil: { el: string; read: string; tip: string }[] = [
+  { el: "Personalidade de marca", read: "Cuidador (principal), com traço de Sábio: zelo, proximidade, clareza técnica.", tip: "Cuidador e Sábio são arquétipos de marca: orientam o tom de voz das campanhas e do atendimento." },
+  { el: "Ativos proprietários", read: "Nome estabelecido, símbolo de coração em azul e vermelho, fundador, gestão médica desde 1996, corpo clínico identificado, Parto Humanizado.", tip: "Elementos que só o HMSP tem e que devem aparecer do mesmo jeito em todos os pontos de contato." },
+  { el: "Públicos que decidem", read: "Famílias jovens, adultos de 40 a 69 anos, empresas e cooperativas, médicos que internam e operam.", tip: "Cada público decide de um jeito e pede uma mensagem própria." },
+  { el: "Vantagem competitiva potencial", read: "“Conduzido por médicos da região desde 1996”: um argumento que concorrentes não replicam em uma semana.", tip: "A gestão médica local desde 1996 é difícil de copiar e vira argumento de marca." },
+  { el: "Sensibilidade", read: "Concentração de decisão e relacionamento em poucas pessoas: o plano cria processos e equipe para que o conhecimento seja institucional.", tip: "O risco é depender de poucas pessoas; processos documentados e equipe própria reduzem esse risco." },
 ];
 
 export default function Situacao() {
   const [active, setActive] = useState<string | null>(null);
   const toggle = (id: string) => setActive((cur) => (cur === id ? null : id));
+
+  /* Tooltip da tabela: aparece colado à linha (8 px), abaixo ou acima dela */
+  const tblRef = useRef<HTMLDivElement>(null);
+  const [row, setRow] = useState<number | null>(null);
+  const [rowTip, setRowTip] = useState<{ top: number; above: boolean } | null>(null);
+  const showRow = (el: HTMLElement, i: number) => {
+    const w = tblRef.current; if (!w) return;
+    const r = el.getBoundingClientRect(), wr = w.getBoundingClientRect();
+    const above = i >= perfil.length - 2;
+    setRow(i);
+    setRowTip({ above, top: above ? r.top - wr.top : r.bottom - wr.top });
+  };
+  const hideRow = () => { setRow(null); setRowTip(null); };
 
   return (
     <figure className="fig fig-situacao">
@@ -70,17 +83,34 @@ export default function Situacao() {
         Mapa de linhas de cuidado derivado do portfólio público <b className="sit-tag">[FATO]</b>. “Saúde empresarial” é uma linha a desenvolver (ver Capítulo 11).
       </p>
 
-      <div className="sit-table-wrap">
-        <table className="sit-table">
-          <thead>
-            <tr><th scope="col">Elemento do perfil</th><th scope="col">Leitura</th></tr>
-          </thead>
-          <tbody>
-            {perfil.map((r) => (
-              <tr key={r.el}><th scope="row">{r.el}</th><td>{r.read}</td></tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="sit-table-box" ref={tblRef}>
+        <div className="sit-table-wrap">
+          <table className={`sit-table${row !== null ? " has-active" : ""}`}>
+            <thead>
+              <tr><th scope="col">Elemento do perfil</th><th scope="col">Leitura</th></tr>
+            </thead>
+            <tbody>
+              {perfil.map((r, i) => (
+                <tr
+                  key={r.el} className={row === i ? "is-active" : ""} tabIndex={0}
+                  aria-label={`${r.el}: ${r.read} ${r.tip}`}
+                  onPointerEnter={(e) => { if (e.pointerType !== "touch") showRow(e.currentTarget, i); }}
+                  onPointerLeave={(e) => { if (e.pointerType !== "touch") hideRow(); }}
+                  onPointerDown={(e) => { if (e.pointerType === "touch") { if (row === i) hideRow(); else showRow(e.currentTarget, i); } }}
+                  onFocus={(e) => showRow(e.currentTarget, i)} onBlur={hideRow}
+                  onKeyDown={(e) => { if (e.key === "Escape") hideRow(); }}
+                ><th scope="row">{r.el}</th><td>{r.read}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {row !== null && rowTip && (
+          <div className={`sit-rowtip${rowTip.above ? " above" : ""}`} style={{ top: rowTip.top }} role="tooltip">
+            <span className="sit-tip-tag">Perfil de marca</span>
+            <strong>{perfil[row].el}</strong>
+            <p>{perfil[row].tip}</p>
+          </div>
+        )}
       </div>
     </figure>
   );
